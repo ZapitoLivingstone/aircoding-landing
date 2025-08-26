@@ -1,20 +1,25 @@
-"use client";
-import { Button } from "./ui/button";
-import { motion } from "framer-motion";
-import Image from "next/image";
+'use client';
+import { Button } from './ui/button';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import CodeParticles from './code-particles';
 
 export default function Hero() {
   return (
     <section className="relative isolate min-h-[92vh] overflow-hidden pt-24">
-      {/* blobs de luz */}
+      {/* blobs suaves de fondo */}
       <motion.div
         aria-hidden
         className="absolute left-1/2 top-[-120px] -z-10 h-[800px] w-[1200px] -translate-x-1/2 rounded-full
-                   bg-gradient-to-br from-teal-600/30 via-teal-500/10 to-transparent blur-3xl"
+                   bg-gradient-to-br from-teal-600/25 via-teal-500/10 to-transparent blur-3xl"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2 }}
       />
+
+      {/* símbolos de “código” */}
+      <CodeParticles />
+
       <div className="container grid items-center gap-10 md:grid-cols-2">
         <div>
           <motion.h1
@@ -40,14 +45,25 @@ export default function Hero() {
           </motion.div>
         </div>
 
+        {/* Logo animado con spotlight */}
         <motion.div
-          className="justify-self-center"
-          initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative justify-self-center"
+          initial={{ opacity: 0, scale: .94 }} animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: .8, delay: .2 }}
         >
-          <div className="relative">
-            <div className="absolute inset-0 -z-10 blur-2xl" style={{ boxShadow: "0 0 120px 40px rgba(0,179,164,.25)" }} />
-            <Image src="/logo-aircoding.png" alt="AirCoding" width={360} height={360} priority className="select-none" />
-          </div>
+          <div className="logo-spotlight" />
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <motion.div
+              style={{ display: 'inline-block' }}
+              animate={{ rotate: [0, 1.5, -1.5, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <Image src="/Logo_AirCoding-sin-fondo.png" alt="AirCoding" width={360} height={360} priority className="select-none" />
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

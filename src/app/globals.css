@@ -30,3 +30,32 @@ body::before{
   background-image: radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
   background-size: 18px 18px;
 }
+
+
+/* Reduce contraste del fondo para que el logo destaque */
+body::before{
+  opacity:.7;                  /* <= antes era muy intenso */
+}
+
+/* Spotlight detrás del logo (se usa en Hero) */
+.logo-spotlight {
+  position: absolute; inset: -40px;
+  border-radius: 9999px;
+  filter: blur(50px);
+  box-shadow: 0 0 140px 40px rgba(0,179,164,.28);
+  pointer-events: none;
+}
+
+/* Animaciones de flotación/rotación para los símbolos </>
+   y para el logo */
+@keyframes floatY { 0%{transform:translateY(0)} 50%{transform:translateY(-10px)} 100%{transform:translateY(0)} }
+@keyframes slowSpin { from{ transform:rotate(0deg) } to{ transform:rotate(360deg) } }
+
+/* Simbolitos “de código” (se usan en CodeParticles) */
+.code-symbol {
+  opacity:.16;
+  font-weight:700;
+  letter-spacing:.5px;
+  user-select:none;
+  pointer-events:none;
+}
