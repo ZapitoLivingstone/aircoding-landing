@@ -1,23 +1,49 @@
 @import "tailwindcss";
 
-/* Tokens de marca */
-:root{
+/* =========================
+   Tokens de marca + tema
+   ========================= */
+:root {
+  /* Marca */
   --ac-teal:#167A7A;
   --ac-teal-dark:#0F5A5A;
   --ac-accent:#00B3A4;
+
+  /* Tema: DARK por defecto */
+  --bg: #0b1220;           /* fondo */
+  --fg: #e5e7eb;           /* texto principal */
+  --muted: rgba(226,232,240,.72); /* texto secundario */
+  --surface: rgba(255,255,255,.05); /* tarjetas / glass */
+  --border: rgba(255,255,255,.10);  /* bordes sutiles */
 }
+
+/* Tema: LIGHT (activado con <html data-theme="light">) */
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: rgba(15,23,42,.64);
+  --surface: rgba(15,23,42,.06);
+  --border: rgba(15,23,42,.12);
+}
+
+/* =========================
+   Base
+   ========================= */
+html, body { background: var(--bg); color: var(--fg); }
 
 /* Contenedor corto */
 .container{ @apply mx-auto max-w-6xl px-4; }
 
-/* Fondo degradado animado */
+/* Fondo degradado animado (rebajado para no tapar logo) */
 body::before{
   content:"";
   position:fixed; inset:-20% -10% auto -10%;
   height:80vh; z-index:-2; filter:blur(60px);
-  background: radial-gradient(35% 45% at 30% 20%, rgba(0,179,164,.25), transparent 60%),
-              radial-gradient(30% 40% at 70% 10%, rgba(22,122,122,.35), transparent 60%),
-              radial-gradient(40% 50% at 50% 60%, rgba(15,90,90,.35), transparent 60%);
+  opacity:.7; /* reduce contraste */
+  background:
+    radial-gradient(35% 45% at 30% 20%, rgba(0,179,164,.25), transparent 60%),
+    radial-gradient(30% 40% at 70% 10%, rgba(22,122,122,.35), transparent 60%),
+    radial-gradient(40% 50% at 50% 60%, rgba(15,90,90,.35), transparent 60%);
   animation: floatGrad 18s ease-in-out infinite;
 }
 @keyframes floatGrad{
@@ -25,19 +51,16 @@ body::before{
   50%{ transform:translateY(10px) scale(1.05); }
 }
 
-/* Sutil “partículas” */
+/* Dots sutiles (ajuste por tema) */
 .background-dots{
   background-image: radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
   background-size: 18px 18px;
 }
-
-
-/* Reduce contraste del fondo para que el logo destaque */
-body::before{
-  opacity:.7;                  /* <= antes era muy intenso */
+:root[data-theme="light"] .background-dots{
+  background-image: radial-gradient(rgba(2,6,23,.08) 1px, transparent 1px);
 }
 
-/* Spotlight detrás del logo (se usa en Hero) */
+/* Spotlight detrás del logo (Hero / Header) */
 .logo-spotlight {
   position: absolute; inset: -40px;
   border-radius: 9999px;
@@ -46,16 +69,60 @@ body::before{
   pointer-events: none;
 }
 
-/* Animaciones de flotación/rotación para los símbolos </>
-   y para el logo */
+/* Animaciones varias */
 @keyframes floatY { 0%{transform:translateY(0)} 50%{transform:translateY(-10px)} 100%{transform:translateY(0)} }
 @keyframes slowSpin { from{ transform:rotate(0deg) } to{ transform:rotate(360deg) } }
 
-/* Simbolitos “de código” (se usan en CodeParticles) */
+/* Simbolitos “de código” (CodeParticles) */
 .code-symbol {
   opacity:.16;
   font-weight:700;
   letter-spacing:.5px;
   user-select:none;
   pointer-events:none;
+}
+
+/* =========================
+   Helpers (sin tocar componentes)
+   ========================= */
+
+/* Tarjeta glass reutilizable (puedes usarla donde quieras) */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem; /* 2xl */
+}
+
+/* Texto secundario consistente */
+.text-muted { color: var(--muted); }
+
+/* Borde consistente por tema */
+.border-token { border-color: var(--border); }
+
+/* =========================
+   Overrides para LIGHT THEME
+   (evitan refactor masivo)
+   ========================= */
+/* Tailwind v4 genera clases como .bg-white/5 → hay que escaparlas */
+:root[data-theme="light"] .bg-white\/5       { background-color: var(--surface) !important; }
+:root[data-theme="light"] .bg-white\/10      { background-color: color-mix(in oklab, var(--surface), white 4%) !important; }
+:root[data-theme="light"] .border-white\/10  { border-color: var(--border) !important; }
+:root[data-theme="light"] .text-slate-300,
+:root[data-theme="light"] .text-slate-400    { color: var(--muted) !important; }
+:root[data-theme="light"] .bg-slate-900\/30  { background-color: color-mix(in oklab, #0f172a 10%, transparent) !important; }
+
+/* Si usas sombras/filtros fuertes en light, suavízalos ligeramente */
+:root[data-theme="light"] .shadow-xl { box-shadow: 0 18px 50px -12px rgba(2,6,23,.15) !important; }
+
+/* Spotlight ajuste en light (un poco menos intenso) */
+:root[data-theme="light"] .logo-spotlight {
+  box-shadow: 0 0 120px 36px rgba(0,179,164,.22);
+}
+
+/* =========================
+   A11y: respeta reduced motion
+   ========================= */
+@media (prefers-reduced-motion: reduce){
+  * { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
 }

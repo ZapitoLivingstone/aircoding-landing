@@ -2,22 +2,30 @@
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import { JSX } from 'react';
+import { useI18n } from '@/providers/ui';
 
-type Service = {
-  key: 'web-movil' | 'software' | 'ia' | 'apis';
-  title: string;
-  desc: string;
-  bullets: string[];
+type Key = 'web-movil' | 'software' | 'ia' | 'apis';
+
+const copy: Record<Key, { es:{title:string, desc:string, bullets:string[]}, en:{title:string, desc:string, bullets:string[]} }> = {
+  'web-movil': {
+    es: { title:'Web & Móvil', desc:'Sitios y apps de alto rendimiento listos para crecer.', bullets:['Next.js / React Native','SEO & ASO','Escalable'] },
+    en: { title:'Web & Mobile', desc:'High-performance sites & apps, ready to scale.', bullets:['Next.js / React Native','SEO & ASO','Scalable'] },
+  },
+  software: {
+    es: { title:'Software a medida', desc:'Tu proceso, tu herramienta. Automatiza y ordena.', bullets:['Procesos ágiles','Seguridad','Soporte'] },
+    en: { title:'Custom Software', desc:'Your process, your tool. Automate & streamline.', bullets:['Agile processes','Security','Support'] },
+  },
+  ia: {
+    es: { title:'Soluciones de IA', desc:'Bots, clasificación y búsqueda inteligente 24/7.', bullets:['Chatbots','Automatización','Análisis'] },
+    en: { title:'AI Solutions', desc:'Bots, classification & smart search 24/7.', bullets:['Chatbots','Automation','Analytics'] },
+  },
+  apis: {
+    es: { title:'Integración de APIs', desc:'Pagos, ERPs y logística conectados sin dolor.', bullets:['Pagos / ERPs','Terceros','Monitoreo'] },
+    en: { title:'API Integrations', desc:'Payments, ERPs & logistics connected, pain-free.', bullets:['Payments / ERPs','3rd-parties','Monitoring'] },
+  },
 };
 
-const services: Service[] = [
-  { key: 'web-movil', title: 'Web & Móvil', desc: 'Sitios y apps de alto rendimiento listos para crecer.', bullets: ['Next.js / React Native', 'SEO & ASO', 'Escalable'] },
-  { key: 'software',  title: 'Software a medida', desc: 'Tu proceso, tu herramienta. Automatiza y ordena.', bullets: ['Procesos ágiles', 'Seguridad', 'Soporte'] },
-  { key: 'ia',        title: 'Soluciones de IA', desc: 'Bots, clasificación y búsqueda inteligente 24/7.', bullets: ['Chatbots', 'Automatización', 'Análisis'] },
-  { key: 'apis',      title: 'Integración de APIs', desc: 'Pagos, ERPs y logística conectados sin dolor.', bullets: ['Pagos / ERPs', 'Terceros', 'Monitoreo'] },
-];
-
-const icons: Record<Service['key'], JSX.Element> = {
+const icons: Record<Key, JSX.Element> = {
   'web-movil': (
     <svg width="22" height="22" viewBox="0 0 24 24" className="opacity-90">
       <rect x="3" y="4" width="14" height="10" rx="2" fill="currentColor" />
@@ -47,47 +55,30 @@ const icons: Record<Service['key'], JSX.Element> = {
   ),
 };
 
-/** Contenedor con stagger */
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-};
-
-/** Item: usa cubic-bezier en vez de "easeOut" string */
-const item: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      ease: [0.22, 1, 0.36, 1], // ≈ easeOut
-    },
-  },
-};
+const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.07 } } };
+const item: Variants = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } } };
 
 export default function ServicesGrid() {
+  const { lang, t } = useI18n();
+  const cards = (Object.keys(copy) as Key[]).map(k => ({ key: k, ...copy[k][lang] }));
+
   return (
     <section id="servicios" className="container py-16">
       <div className="flex items-end justify-between">
-        <h2 className="text-2xl font-bold md:text-3xl">Servicios</h2>
+        <h2 className="text-2xl font-bold md:text-3xl">{t('services_title')}</h2>
         <Link href="/servicios" className="text-sm text-slate-400 hover:text-slate-200">
-          Ver todos →
+          {t('view_all')}
         </Link>
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
         className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
       >
-        {services.map((s) => (
+        {cards.map((s) => (
           <motion.div key={s.key} variants={item}>
             <Link
               href={`/servicios/${s.key}`}
-              aria-label={`Ver detalles de ${s.title}`}
+              aria-label={`${t('view_all').replace('→','').trim()} ${s.title}`}
               className="group relative block rounded-2xl p-[1px] transition
                          bg-gradient-to-br from-teal-500/30 to-transparent hover:from-teal-400/50 focus:outline-none"
             >
@@ -101,7 +92,7 @@ export default function ServicesGrid() {
                     {icons[s.key]}
                   </div>
                   <span className="text-xs text-slate-400 transition group-hover:text-[var(--ac-accent)]">
-                    Ver detalles →
+                    {lang === 'en' ? 'See details →' : 'Ver detalles →'}
                   </span>
                 </div>
 
@@ -110,10 +101,7 @@ export default function ServicesGrid() {
 
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {s.bullets.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-lg bg-white/5 px-2.5 py-1 text-xs text-slate-300 ring-1 ring-white/10"
-                    >
+                    <li key={tag} className="rounded-lg bg-white/5 px-2.5 py-1 text-xs text-slate-300 ring-1 ring-white/10">
                       {tag}
                     </li>
                   ))}

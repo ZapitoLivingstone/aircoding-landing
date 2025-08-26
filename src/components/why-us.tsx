@@ -1,6 +1,7 @@
 'use client';
 import { motion, type Variants, useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useI18n } from '@/providers/ui';
 
 const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.07 } } };
 const cardIn: Variants = {
@@ -39,28 +40,46 @@ function CountUp({ to, duration = 1.4, decimals = 0, prefix = '', suffix = '', c
   return <span ref={viewRef} className={className}>{prefix}{v.toFixed(decimals)}{suffix}</span>;
 }
 
-const items = [
-  { title:'Rápidos y claros', desc:'Propuestas en días, entregas iterativas y comunicación directa.',
-    icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor"/></svg>) },
-  { title:'Código moderno', desc:'Next.js + Tailwind. Arquitectura limpia y escalable.',
-    icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M8 16 4 12l4-4M16 8l4 4-4 4M10 20l4-16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
-  { title:'Seguro y performante', desc:'Buenas prácticas, Lighthouse alto y protección de datos.',
-    icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M12 3 4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4Z" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
-  { title:'Post-entrega', desc:'Soporte y mejoras continuas según tu crecimiento.',
-    icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 6v12a2 2 0 0 0 2 2h12" stroke="currentColor" strokeWidth="2" fill="none"/></svg>) },
-];
-
-const metrics = [
-  { value:30, prefix:'+', label:'Proyectos entregados' },
-  { value:4.9, suffix:'/5', decimals:1, label:'Satisfacción de clientes' },
-  { value:4, prefix:'< ', suffix:' sem', label:'Tiempo típico de go-live' },
-] as const;
-
 export default function WhyUs() {
+  const { lang } = useI18n();
+
+  const title = lang === 'en' ? 'Why AirCoding?' : '¿Por qué AirCoding?';
+
+  const items = useMemo(() => (
+    lang === 'en'
+      ? [
+          { title:'Fast & transparent', desc:'Clear scope and pricing. We deliver in small, visible iterations.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor"/></svg>) },
+          { title:'Built to grow', desc:'Clean, maintainable solutions ready to scale with your needs.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M8 16 4 12l4-4M16 8l4 4-4 4M10 20l4-16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
+          { title:'Reliable & secure', desc:'Good practices, strong performance and data protection.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M12 3 4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4Z" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
+          { title:'Post-launch support', desc:'We stay with you for improvements and monitoring.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 6v12a2 2 0 0 0 2 2h12" stroke="currentColor" strokeWidth="2" fill="none"/></svg>) },
+        ]
+      : [
+          { title:'Rápidos y claros', desc:'Alcance y precio transparentes. Entregas iterativas visibles.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor"/></svg>) },
+          { title:'Listos para crecer', desc:'Soluciones limpias y mantenibles que escalan contigo.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M8 16 4 12l4-4M16 8l4 4-4 4M10 20l4-16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
+          { title:'Confiables y seguros', desc:'Buenas prácticas, alto rendimiento y protección de datos.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M12 3 4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4Z" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
+          { title:'Acompañamiento', desc:'Seguimos contigo para mejoras y monitoreo post-lanzamiento.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 6v12a2 2 0 0 0 2 2h12" stroke="currentColor" strokeWidth="2" fill="none"/></svg>) },
+        ]
+  ), [lang]);
+
+  const metrics = useMemo(() => (
+    lang === 'en'
+      ? [
+          { value:30, prefix:'+', label:'Projects delivered' },
+          { value:4.9, suffix:'/5', decimals:1, label:'Client satisfaction' },
+          { value:4, prefix:'< ', suffix:' weeks', label:'Typical go-live time' },
+        ]
+      : [
+          { value:30, prefix:'+', label:'Proyectos entregados' },
+          { value:4.9, suffix:'/5', decimals:1, label:'Satisfacción de clientes' },
+          { value:4, prefix:'< ', suffix:' sem', label:'Tiempo típico de go-live' },
+        ]
+  ), [lang]);
+
   return (
-    <section className="container py-16" id="por-que">
+    // 👇 fuerza remount cuando cambia el idioma
+    <section key={lang} className="container py-16" id="por-que">
       <div className="relative inline-block">
-        <h2 className="text-2xl font-bold md:text-3xl">¿Por qué AirCoding?</h2>
+        <h2 className="text-2xl font-bold md:text-3xl">{title}</h2>
         <motion.span
           aria-hidden initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
           viewport={{ once: true, amount: 0.8 }} transition={{ duration: 0.6, ease: [0.22,1,0.36,1] }}
@@ -68,7 +87,6 @@ export default function WhyUs() {
         />
       </div>
 
-      {/* Grid de pilares */}
       <motion.div
         variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
         className="mt-8 grid gap-6 sm:grid-cols-2"
@@ -76,9 +94,7 @@ export default function WhyUs() {
         {items.map((it) => (
           <motion.div key={it.title} variants={cardIn}>
             <TiltCard>
-              {/* CLIP + nueva pila de apilamiento: NO más burbujas fuera */}
               <div className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur shadow-xl transition">
-                {/* halo radial SUAVE detrás del icono, dentro del card y con -z-10 */}
                 <motion.div
                   aria-hidden
                   className="pointer-events-none absolute -z-10 -top-10 -left-10 h-32 w-32 rounded-full
@@ -103,7 +119,6 @@ export default function WhyUs() {
         ))}
       </motion.div>
 
-      {/* Métricas */}
       <motion.div
         variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
         className="mt-10 grid gap-6 sm:grid-cols-3"
@@ -115,7 +130,7 @@ export default function WhyUs() {
             whileHover={{ y: -4 }} transition={{ duration: 0.35, ease: [0.22,1,0.36,1] }}
           >
             <CountUp
-              to={m.value} decimals={('decimals' in m ? (m as any).decimals : 0)}
+              to={m.value} decimals={(m as any).decimals ?? 0}
               prefix={(m as any).prefix ?? ''} suffix={(m as any).suffix ?? ''}
               className="text-3xl font-extrabold text-[var(--ac-accent)]"
             />

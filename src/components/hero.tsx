@@ -3,8 +3,11 @@ import { Button } from './ui/button';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import CodeParticles from './code-particles';
+import { useI18n } from '@/providers/ui';
 
 export default function Hero() {
+  const { t } = useI18n();
+
   return (
     <section className="relative isolate min-h-[92vh] overflow-hidden pt-24">
       {/* blobs suaves de fondo */}
@@ -27,21 +30,23 @@ export default function Hero() {
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.7 }}
           >
             <span className="bg-gradient-to-r from-teal-300 via-white to-teal-300 bg-clip-text text-transparent">
-              Software y apps que hacen crecer tu negocio.
+              {t('hero_h1')}
             </span>
           </motion.h1>
+
           <motion.p
             className="mt-4 text-lg text-slate-300"
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.05 }}
           >
-            Web & Móvil, Software a medida, Soluciones de IA e Integración de APIs. Rápido, moderno y sin complicaciones.
+            {t('hero_sub')}
           </motion.p>
+
           <motion.div
             className="mt-8 flex flex-wrap gap-3"
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <a href="#contacto"><Button className="w-full sm:w-auto">Cotiza tu proyecto</Button></a>
-            <a href="#servicios"><Button variant="ghost" className="w-full sm:w-auto">Ver servicios</Button></a>
+            <a href="#contacto"><Button className="w-full sm:w-auto">{t('hero_cta_primary')}</Button></a>
+            <a href="#servicios"><Button variant="ghost" className="w-full sm:w-auto">{t('hero_cta_secondary')}</Button></a>
           </motion.div>
         </div>
 
@@ -54,12 +59,12 @@ export default function Hero() {
           <div className="logo-spotlight" />
           <motion.div
             animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 4, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
           >
             <motion.div
               style={{ display: 'inline-block' }}
               animate={{ rotate: [0, 1.5, -1.5, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: 6, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
             >
               <Image src="/Logo_AirCoding-sin-fondo.png" alt="AirCoding" width={360} height={360} priority className="select-none" />
             </motion.div>
