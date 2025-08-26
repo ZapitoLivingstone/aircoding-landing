@@ -1,9 +1,15 @@
 import Client from './client';
+import { cookies } from 'next/headers';
+import { servicesData } from '@/content/services';
 
-export const metadata = {
-  title: 'Integración de APIs — AirCoding',
-  description: 'Conectamos pagos, ERPs, logística y facturación. Datos sincronizados.',
-};
+export async function generateMetadata() {
+  const lang = (await cookies()).get('ac-lang')?.value === 'en' ? 'en' : 'es';
+  const s = servicesData['apis'];
+  return {
+    title: `${s.title[lang] ?? s.title.es} — AirCoding`,
+    description: s.summary[lang] ?? s.summary.es,
+  };
+}
 
 export default function Page() {
   return <Client />;

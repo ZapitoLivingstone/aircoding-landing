@@ -1,4 +1,7 @@
-import Link from "next/link";
+'use client';
+import { motion, type Variants } from 'framer-motion';
+import { useI18n } from '@/providers/ui';
+import { Button } from './ui/button';
 
 type Props = {
   title: string;
@@ -10,53 +13,106 @@ type Props = {
   kpis: string[];
 };
 
-export default function ServicePage({
-  title, summary, forWho, fit, ideas, benefits, kpis,
-}: Props) {
+const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
+const itemIn: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: .45, ease: [0.22,1,0.36,1] } },
+};
+
+function CheckLi({ children }: { children: React.ReactNode }) {
   return (
-    <main className="container py-16">
-      <Link href="/#servicios" className="text-sm text-slate-400 hover:text-slate-200">← Volver</Link>
-      <h1 className="mt-2 text-3xl font-bold">{title}</h1>
-      <p className="mt-2 max-w-2xl text-slate-300">{summary}</p>
+    <li className="flex items-start gap-2">
+      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--ac-teal)]/20 ring-1 ring-[var(--ac-teal)]/30 text-[var(--ac-teal)]">
+        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden><path d="M20 7 10 17l-6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>
+      </span>
+      <span className="text-sm text-slate-300">{children}</span>
+    </li>
+  );
+}
 
-      {/* ¿Para quién? / Te sirve si... */}
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold">¿Para quién es?</h2>
-          <ul className="mt-3 space-y-2 text-sm">{forWho.map(i => <li key={i}>• {i}</li>)}</ul>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold">Te sirve si…</h2>
-          <ul className="mt-3 space-y-2 text-sm">{fit.map(i => <li key={i}>• {i}</li>)}</ul>
-        </div>
-      </div>
+export default function ServicePage(props: Props) {
+  const { t, lang } = useI18n();
+  const txt = lang === 'en'
+    ? {
+        introCta: 'Get a quote',
+        sectionForWho: 'Who is this for',
+        sectionFit: 'It’s a fit if you...',
+        sectionIdeas: 'Implementation ideas',
+        sectionBenefits: 'What you get',
+        sectionKPIs: 'Expected results',
+        contactCta: 'Talk to us',
+        contactSub: 'We’ll get back within 24 hours.',
+      }
+    : {
+        introCta: 'Cotiza tu proyecto',
+        sectionForWho: '¿Para quién es?',
+        sectionFit: 'Te sirve si…',
+        sectionIdeas: 'Ideas de implementación',
+        sectionBenefits: 'Lo que ganas',
+        sectionKPIs: 'Resultados esperados',
+        contactCta: 'Conversemos',
+        contactSub: 'Te respondemos en menos de 24 horas.',
+      };
 
-      {/* Ideas y beneficios */}
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold">Ideas de implementación</h2>
-          <ul className="mt-3 space-y-2 text-sm">{ideas.map(i => <li key={i}>• {i}</li>)}</ul>
+  return (
+    <div className="container py-16">
+      {/* Header del servicio */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-teal-700/25 to-teal-500/10 p-8 ring-1 ring-white/10"
+      >
+        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(0,179,164,.18),transparent_60%)] blur-2xl" />
+        <h1 className="text-3xl font-bold md:text-4xl">{props.title}</h1>
+        <p className="mt-3 max-w-2xl text-slate-300">{props.summary}</p>
+        <div className="mt-6">
+          <a href="#contacto"><Button>{txt.introCta}</Button></a>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold">Beneficios</h2>
-          <ul className="mt-3 space-y-2 text-sm">{benefits.map(i => <li key={i}>• {i}</li>)}</ul>
-        </div>
-      </div>
+      </motion.div>
 
-      {/* KPIs */}
-      <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
-        <h2 className="text-lg font-semibold">Resultados / KPIs esperados</h2>
-        <ul className="mt-3 grid gap-2 sm:grid-cols-2 text-sm">{kpis.map(i => <li key={i}>• {i}</li>)}</ul>
-      </div>
+      {/* Dos columnas confiables */}
+      <div className="mt-10 grid gap-6 md:grid-cols-2">
+        {/* Columna izquierda */}
+        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: .2 }} className="space-y-6">
+          <motion.div variants={itemIn} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-lg font-semibold">{txt.sectionForWho}</h2>
+            <ul className="mt-3 space-y-2">{props.forWho.map((x) => <CheckLi key={x}>{x}</CheckLi>)}</ul>
+          </motion.div>
 
-      {/* CTA */}
-      <div className="mt-10 rounded-2xl bg-gradient-to-r from-teal-700/40 to-teal-500/20 p-6 ring-1 ring-white/10">
-        <h3 className="text-xl font-semibold">¿Este servicio calza contigo?</h3>
-        <p className="mt-1 text-slate-300">Cuéntanos tu caso y te proponemos un plan esta semana.</p>
-        <div className="mt-4">
-          <a href="/#contacto" className="underline">Contactar ahora →</a>
-        </div>
+          <motion.div variants={itemIn} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-lg font-semibold">{txt.sectionFit}</h2>
+            <ul className="mt-3 space-y-2">{props.fit.map((x) => <CheckLi key={x}>{x}</CheckLi>)}</ul>
+          </motion.div>
+
+          <motion.div variants={itemIn} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-lg font-semibold">{txt.sectionIdeas}</h2>
+            <ul className="mt-3 space-y-2">{props.ideas.map((x) => <CheckLi key={x}>{x}</CheckLi>)}</ul>
+          </motion.div>
+        </motion.div>
+
+        {/* Columna derecha */}
+        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: .2 }} className="space-y-6">
+          <motion.div variants={itemIn} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-lg font-semibold">{txt.sectionBenefits}</h2>
+            <ul className="mt-3 space-y-2">{props.benefits.map((x) => <CheckLi key={x}>{x}</CheckLi>)}</ul>
+          </motion.div>
+
+          <motion.div variants={itemIn} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-lg font-semibold">{txt.sectionKPIs}</h2>
+            <ul className="mt-3 space-y-2">{props.kpis.map((x) => <CheckLi key={x}>{x}</CheckLi>)}</ul>
+          </motion.div>
+
+          {/* CTA de confianza */}
+          <motion.div variants={itemIn} className="rounded-2xl border border-white/10 bg-gradient-to-r from-teal-700/30 to-teal-500/15 p-6 ring-1 ring-white/10">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <div>
+                <div className="text-lg font-semibold">{props.title}</div>
+                <p className="text-sm text-slate-300">{txt.contactSub}</p>
+              </div>
+              <a href="#contacto"><Button>{txt.contactCta}</Button></a>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </main>
+    </div>
   );
 }

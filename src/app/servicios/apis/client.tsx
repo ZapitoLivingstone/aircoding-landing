@@ -8,7 +8,7 @@ export default function Client() {
   const { lang } = useI18n();
   const data = svc('apis', lang);
   return (
-    <ServicePage
+    <ServicePage key={lang}
       title="Integración de APIs"
       summary="Conectamos pagos, ERPs, logística y facturación. Datos sincronizados."
       forWho={[

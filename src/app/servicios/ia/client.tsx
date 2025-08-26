@@ -7,7 +7,7 @@ export default function Client() {
   const { lang } = useI18n();
   const data = svc('ia', lang);
   return (
-    <ServicePage
+    <ServicePage key={lang}
       title="Soluciones de IA"
       summary="Atiende 24/7, clasifica, resume y encuentra información al instante."
       forWho={[

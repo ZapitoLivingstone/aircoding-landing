@@ -1,9 +1,15 @@
 import Client from './client';
+import { cookies } from 'next/headers';
+import { servicesData } from '@/content/services';
 
-export const metadata = {
-  title: 'Desarrollo Web & Móvil — AirCoding',
-  description: 'Sitios y apps rápidas, modernas y optimizadas para SEO/ASO.',
-};
+export async function generateMetadata() {
+  const lang = (await cookies()).get('ac-lang')?.value === 'en' ? 'en' : 'es';
+  const s = servicesData['web-movil'];
+  return {
+    title: `${s.title[lang] ?? s.title.es} — AirCoding`,
+    description: s.summary[lang] ?? s.summary.es,
+  };
+}
 
 export default function Page() {
   return <Client />;

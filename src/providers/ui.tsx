@@ -91,21 +91,32 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLang] = useState<Lang>('es');
 
   useEffect(() => {
-    const saved = (typeof window !== 'undefined' && localStorage.getItem('ac-lang')) as Lang | null;
-    if (saved) setLang(saved);
-    else if (typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('en')) {
-      setLang('en');
+  if (typeof document !== 'undefined') {
+    const m = document.cookie.match(/(?:^|; )ac-lang=(es|en)/);
+    if (m && (m[1] === 'es' || m[1] === 'en')) {
+      setLang(m[1] as Lang);
+      return;
     }
-  }, []);
+  }
+  const saved = (typeof window !== 'undefined' && localStorage.getItem('ac-lang')) as Lang | null;
+  if (saved) setLang(saved);
+  else if (typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('en')) {
+    setLang('en');
+  }
+}, []);
+
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = lang;
+      // 👇 añade esta línea
+      document.cookie = `ac-lang=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`;
     }
     if (typeof window !== 'undefined') {
       localStorage.setItem('ac-lang', lang);
     }
   }, [lang]);
+
 
   const t = (k: string) => dicts[lang][k] ?? dicts.es[k] ?? k;
   const i18nValue = useMemo(() => ({ lang, setLang, t }), [lang]);

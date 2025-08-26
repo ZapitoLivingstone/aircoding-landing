@@ -8,7 +8,7 @@ export default function Client() {
   const { lang } = useI18n();
   const data = svc('web-movil', lang);
   return (
-    <ServicePage
+    <ServicePage key={lang}
       title="Desarrollo Web & Móvil"
       summary="Sitios y apps rápidas, modernas y optimizadas para SEO/ASO."
       forWho={[

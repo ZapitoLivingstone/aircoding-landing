@@ -9,7 +9,7 @@ export default function Client() {
   const { lang } = useI18n();
   const data = svc('software', lang);
   return (
-    <ServicePage
+    <ServicePage key={lang}
       title="Software a medida"
       summary="Tu proceso, tu herramienta. Automatizamos y ordenamos el negocio."
       forWho={[

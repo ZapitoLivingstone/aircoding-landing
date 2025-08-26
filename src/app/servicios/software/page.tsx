@@ -1,10 +1,16 @@
-'use client';
-import ServicePage from '@/components/service-page';
-import { svc } from '@/content/services';
-import { useI18n } from '@/providers/ui';
+import Client from './client';
+import { cookies } from 'next/headers';
+import { servicesData } from '@/content/services';
 
-export default function Client() {
-  const { lang } = useI18n();
-  const data = svc('software', lang); // usa tu helper bilingüe
-  return <ServicePage {...data} />;
+export async function generateMetadata() {
+  const lang = (await cookies()).get('ac-lang')?.value === 'en' ? 'en' : 'es';
+  const s = servicesData['software'];
+  return {
+    title: `${s.title[lang] ?? s.title.es} — AirCoding`,
+    description: s.summary[lang] ?? s.summary.es,
+  };
+}
+
+export default function Page() {
+  return <Client />;
 }

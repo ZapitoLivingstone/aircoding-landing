@@ -1,9 +1,15 @@
 import Client from './client';
+import { cookies } from 'next/headers';
+import { servicesData } from '@/content/services';
 
-export const metadata = {
-  title: 'Soluciones de IA — AirCoding',
-  description: 'Atiende 24/7, clasifica, resume y encuentra información al instante.',
-};
+export async function generateMetadata() {
+  const lang = (await cookies()).get('ac-lang')?.value === 'en' ? 'en' : 'es';
+  const s = servicesData['ia'];
+  return {
+    title: `${s.title[lang] ?? s.title.es} — AirCoding`,
+    description: s.summary[lang] ?? s.summary.es,
+  };
+}
 
 export default function Page() {
   return <Client />;
