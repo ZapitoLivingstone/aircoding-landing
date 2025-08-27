@@ -17,7 +17,7 @@ export default function CTABanner() {
             : 'Agenda tu cotización hoy y arranquemos esta semana.'}
         </p>
         <div className="mt-6">
-          <a href="#contact-form">
+          <a href="/#contacto">
             <Button>{lang === 'en' ? 'Email us' : 'Escríbenos por correo'}</Button>
           </a>
         </div>

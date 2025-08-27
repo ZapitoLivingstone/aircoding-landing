@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 import { servicesData } from '@/content/services';
 
 export async function generateMetadata() {
-  const lang = (await cookies()).get('ac-lang')?.value === 'en' ? 'en' : 'es';
+  const cookieStore = await cookies();
+  const lang = cookieStore.get('ac-lang')?.value === 'en' ? 'en' : 'es';
   const s = servicesData['ia'];
   return {
     title: `${s.title[lang] ?? s.title.es} — AirCoding`,
