@@ -1,7 +1,8 @@
+// components/services-grid.tsx
 'use client';
 import Link from 'next/link';
-import { motion, type Variants } from 'framer-motion';
-import { JSX } from 'react';
+import { motion, type Variants, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
+import { JSX, useCallback } from 'react';
 import { useI18n } from '@/providers/ui';
 
 type Key = 'web-movil' | 'software' | 'ia' | 'apis';
@@ -41,9 +42,9 @@ const icons: Record<Key, JSX.Element> = {
   ia: (
     <svg width="22" height="22" viewBox="0 0 24 24" className="opacity-90">
       <path d="M8 9a4 4 0 0 1 8 0v6a4 4 0 0 1-8 0V9Z" fill="currentColor" />
-      <circle cx="9" cy="10" r="1" fill="#0EA5A4" />
-      <circle cx="15" cy="10" r="1" fill="#0EA5A4" />
-      <rect x="11" y="13" width="2" height="2" rx=".5" fill="#0EA5A4" />
+      <circle cx="9" cy="10" r="1" fill="currentColor" />
+      <circle cx="15" cy="10" r="1" fill="currentColor" />
+      <rect x="11" y="13" width="2" height="2" rx=".5" fill="currentColor" />
     </svg>
   ),
   apis: (
@@ -58,6 +59,75 @@ const icons: Record<Key, JSX.Element> = {
 const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.07 } } };
 const item: Variants = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } } };
 
+/* ===== Acentos por tarjeta (sobrios) =====
+   - web-movil: indigo
+   - software: cyan
+   - ia: violet
+   - apis: amber (muy suave)
+*/
+const ACCENTS: Record<Key, string> = {
+  'web-movil': 'oklch(0.73 0.15 264)',  // indigo
+  software:    'oklch(0.76 0.12 205)',  // cyan
+  ia:          'oklch(0.78 0.13 310)',  // violet
+  apis:        'oklch(0.86 0.12 80)',   // amber
+};
+
+/* ====== Tilt + Spotlight (reactbits-style) ====== */
+function TiltSpotlight({ children, href, accent }: { children: React.ReactNode; href: string; accent: string }) {
+  const prefers = useReducedMotion();
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const trx = useSpring(rx, { stiffness: 150, damping: 20, mass: 0.4 });
+  const try_ = useSpring(ry, { stiffness: 150, damping: 20, mass: 0.4 });
+
+  const onMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (prefers) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const nx = (e.clientX - r.left) / r.width;
+    const ny = (e.clientY - r.top) / r.height;
+    rx.set((ny - 0.5) * -12);
+    ry.set((nx - 0.5) * 12);
+    e.currentTarget.style.setProperty("--mx", `${nx * 100}%`);
+    e.currentTarget.style.setProperty("--my", `${ny * 100}%`);
+  }, [prefers, rx, ry]);
+
+  const onLeave = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    rx.set(0); ry.set(0);
+    e.currentTarget.style.setProperty("--mx", `50%`);
+    e.currentTarget.style.setProperty("--my", `50%`);
+  }, [rx, ry]);
+
+  return (
+    <Link
+      href={href}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className="group relative block rounded-2xl p-[1px] transition focus:outline-none"
+      style={{
+        transformStyle: "preserve-3d",
+        /* Borde con gradiente MUY sutil usando el acento */
+        background: `linear-gradient(135deg, color-mix(in oklab, ${accent} 28%, transparent) 0%, transparent 60%)`,
+      } as any}
+    >
+      {/* Spotlight */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(550px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, ${accent} 18%, transparent) 0%, transparent 55%)`,
+        }}
+      />
+      <motion.div
+        style={{ rotateX: trx, rotateY: try_, transformStyle: "preserve-3d" }}
+        className="h-full rounded-2xl border bg-[color:var(--surface)] p-5 backdrop-blur
+                   transition group-hover:-translate-y-1"
+      >
+        {children}
+      </motion.div>
+    </Link>
+  );
+}
+
 export default function ServicesGrid() {
   const { lang, t } = useI18n();
   const cards = (Object.keys(copy) as Key[]).map(k => ({ key: k, ...copy[k][lang] }));
@@ -66,7 +136,7 @@ export default function ServicesGrid() {
     <section id="servicios" className="container py-16">
       <div className="flex items-end justify-between">
         <h2 className="text-2xl font-bold md:text-3xl">{t('services_title')}</h2>
-        <Link href="/servicios" className="text-sm text-slate-400 hover:text-slate-200">
+        <Link href="/servicios" className="text-sm text-muted hover:text-[color:var(--fg)]">
           {t('view_all')}
         </Link>
       </div>
@@ -74,42 +144,64 @@ export default function ServicesGrid() {
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
         className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
       >
-        {cards.map((s) => (
-          <motion.div key={s.key} variants={item}>
-            <Link
-              href={`/servicios/${s.key}`}
-              aria-label={`${t('view_all').replace('→','').trim()} ${s.title}`}
-              className="group relative block rounded-2xl p-[1px] transition
-                         bg-gradient-to-br from-teal-500/30 to-transparent hover:from-teal-400/50 focus:outline-none"
-            >
-              <div
-                className="h-full rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur
-                           transition group-hover:-translate-y-1 group-hover:bg-white/10
-                           group-hover:shadow-[0_20px_60px_rgba(0,179,164,.15)]"
-              >
+        {cards.map((s) => {
+          const accent = ACCENTS[s.key as Key];
+          return (
+            <motion.div key={s.key} variants={item}>
+              <TiltSpotlight href={`/servicios/${s.key}`} accent={accent}>
+                {/* Header de la card */}
                 <div className="flex items-start justify-between">
-                  <div className="rounded-xl bg-[var(--ac-teal)]/15 p-2.5 ring-1 ring-[var(--ac-teal)]/30 text-[var(--ac-teal)]">
-                    {icons[s.key]}
+                  {/* Icon pill — ahora toma el acento dinámico */}
+                  <div
+                    className="rounded-xl p-2.5 ring-1"
+                    style={{
+                      color: accent,
+                      background: `color-mix(in oklab, ${accent} 12%, transparent)`,
+                      borderColor: `color-mix(in oklab, ${accent} 24%, transparent)`,
+                    }}
+                  >
+                    <span style={{ color: accent }}>{icons[s.key as Key]}</span>
                   </div>
-                  <span className="text-xs text-slate-400 transition group-hover:text-[var(--ac-accent)]">
+
+                  <span
+                    className="text-xs transition-colors"
+                    style={{ color: 'color-mix(in oklab, var(--fg) 60%, transparent)' }}
+                  >
                     {lang === 'en' ? 'See details →' : 'Ver detalles →'}
                   </span>
                 </div>
 
+                {/* Body */}
                 <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-                <p className="mt-1 text-sm text-slate-300">{s.desc}</p>
+                <p className="mt-1 text-sm text-muted">{s.desc}</p>
 
+                {/* Tags — neutrales, sin teal */}
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {s.bullets.map((tag) => (
-                    <li key={tag} className="rounded-lg bg-white/5 px-2.5 py-1 text-xs text-slate-300 ring-1 ring-white/10">
+                    <li
+                      key={tag}
+                      className="rounded-lg px-2.5 py-1 text-xs ring-1"
+                      style={{
+                        background: 'color-mix(in oklab, var(--surface-2), transparent 10%)',
+                        color: 'color-mix(in oklab, var(--fg) 82%, transparent)',
+                        borderColor: 'color-mix(in oklab, var(--border) 100%, transparent)',
+                      }}
+                    >
                       {tag}
                     </li>
                   ))}
                 </ul>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+
+                {/* Hover states sutiles con el acento */}
+                <style jsx>{`
+                  .group:hover h3 { color: ${accent}; }
+                  .group:hover span.text-xs { color: ${accent}; }
+                  .group:hover li { border-color: color-mix(in oklab, ${accent} 28%, var(--border)); }
+                `}</style>
+              </TiltSpotlight>
+            </motion.div>
+          );
+        })}
       </motion.div>
     </section>
   );

@@ -1,6 +1,6 @@
 'use client';
-import { motion, type Variants, useInView } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, type Variants } from 'framer-motion';
+import { useMemo, useRef } from 'react';
 import { useI18n } from '@/providers/ui';
 
 const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.07 } } };
@@ -26,122 +26,148 @@ function TiltCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CountUp({ to, duration = 1.4, decimals = 0, prefix = '', suffix = '', className = '' }:{
-  to:number; duration?:number; decimals?:number; prefix?:string; suffix?:string; className?:string;
-}) {
-  const viewRef = useRef<HTMLSpanElement>(null); const inView = useInView(viewRef, { once:true, amount:0.6 });
-  const [v, setV] = useState(0);
-  useEffect(() => {
-    if (!inView) return; const s = performance.now(); let id = 0;
-    const tick = (n:number)=>{ const p = Math.min(1, (n - s) / (duration*1000)); const e = 1 - Math.pow(1-p,3);
-      setV(to*e); if (p<1) id = requestAnimationFrame(tick); };
-    id = requestAnimationFrame(tick); return ()=>cancelAnimationFrame(id);
-  }, [inView, to, duration]);
-  return <span ref={viewRef} className={className}>{prefix}{v.toFixed(decimals)}{suffix}</span>;
-}
-
 export default function WhyUs() {
   const { lang } = useI18n();
 
   const title = lang === 'en' ? 'Why AirCoding?' : '¿Por qué AirCoding?';
 
-  const items = useMemo(() => (
+  // Mensaje honesto: empresa/equipo pequeño (actualmente 1), 2 clientes, factura
+  const honesty = lang === 'en'
+    ? 'We’re a small, transparent team (currently one person). I’ve worked with 2 clients so far. I can issue invoices and I’m clear about scope, timelines and costs.'
+    : 'Somos un equipo pequeño y transparente (actualmente una persona). He trabajado con 2 clientes hasta ahora. Puedo emitir factura y soy claro con el alcance, plazos y costos.';
+
+  // Razones para trabajar con AirCoding (sin métricas ni portafolio aquí)
+  const reasons = useMemo(() => (
     lang === 'en'
       ? [
-          { title:'Fast & transparent', desc:'Clear scope and pricing. We deliver in small, visible iterations.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor"/></svg>) },
-          { title:'Built to grow', desc:'Clean, maintainable solutions ready to scale with your needs.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M8 16 4 12l4-4M16 8l4 4-4 4M10 20l4-16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
-          { title:'Reliable & secure', desc:'Good practices, strong performance and data protection.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M12 3 4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4Z" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
-          { title:'Post-launch support', desc:'We stay with you for improvements and monitoring.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 6v12a2 2 0 0 0 2 2h12" stroke="currentColor" strokeWidth="2" fill="none"/></svg>) },
+          { h:'Transparent process', p:'Clear proposals, fixed milestones and weekly updates. No hidden fees.', icon:'checklist', badges:['Invoices', 'Formal quotes', 'NDA on request'] },
+          { h:'Direct communication', p:'You talk to the person who builds. Fewer layers, faster feedback.', icon:'chat' },
+          { h:'Milestone delivery', p:'Short iterations with demos. Scope managed in small, visible steps.', icon:'calendar' },
+          { h:'Maintainable code', p:'Clean architecture, docs and handover. Built to evolve, not just to launch.', icon:'code' },
+          { h:'Security & privacy', p:'Good practices by default and basic data-protection hygiene.', icon:'shield' },
+          { h:'Post-launch support', p:'Monitoring and improvement cycles after go-live.', icon:'support' },
         ]
       : [
-          { title:'Rápidos y claros', desc:'Alcance y precio transparentes. Entregas iterativas visibles.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="currentColor"/></svg>) },
-          { title:'Listos para crecer', desc:'Soluciones limpias y mantenibles que escalan contigo.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M8 16 4 12l4-4M16 8l4 4-4 4M10 20l4-16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
-          { title:'Confiables y seguros', desc:'Buenas prácticas, alto rendimiento y protección de datos.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M12 3 4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4Z" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>) },
-          { title:'Acompañamiento', desc:'Seguimos contigo para mejoras y monitoreo post-lanzamiento.', icon:(<svg width="22" height="22" viewBox="0 0 24 24" className="text-[var(--ac-teal)]"><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 6v12a2 2 0 0 0 2 2h12" stroke="currentColor" strokeWidth="2" fill="none"/></svg>) },
+          { h:'Proceso transparente', p:'Propuestas claras, hitos definidos y reportes semanales. Sin costos ocultos.', icon:'checklist', badges:['Factura', 'Cotización formal', 'NDA si se requiere'] },
+          { h:'Comunicación directa', p:'Hablas con quien construye. Menos capas, feedback más rápido.', icon:'chat' },
+          { h:'Entregas por hitos', p:'Iteraciones cortas con demos. Alcance gestionado en pasos visibles.', icon:'calendar' },
+          { h:'Código mantenible', p:'Arquitectura limpia, documentación y traspaso. Pensado para crecer.', icon:'code' },
+          { h:'Seguridad y privacidad', p:'Buenas prácticas por defecto y cuidado básico de datos.', icon:'shield' },
+          { h:'Soporte post-lanzamiento', p:'Monitoreo y mejoras continuas después del go-live.', icon:'support' },
         ]
   ), [lang]);
 
-  const metrics = useMemo(() => (
-    lang === 'en'
-      ? [
-          { value:30, prefix:'+', label:'Projects delivered' },
-          { value:4.9, suffix:'/5', decimals:1, label:'Client satisfaction' },
-          { value:4, prefix:'< ', suffix:' weeks', label:'Typical go-live time' },
-        ]
-      : [
-          { value:30, prefix:'+', label:'Proyectos entregados' },
-          { value:4.9, suffix:'/5', decimals:1, label:'Satisfacción de clientes' },
-          { value:4, prefix:'< ', suffix:' sem', label:'Tiempo típico de go-live' },
-        ]
-  ), [lang]);
+  // Paleta de acentos sobrios por card (indigo/cyan/violet/amber)
+  const ACCENTS = [
+    'oklch(0.73 0.15 264)',  // indigo
+    'oklch(0.76 0.12 205)',  // cyan
+    'oklch(0.78 0.13 310)',  // violet
+    'oklch(0.86 0.12 80)',   // amber
+  ] as const;
+
+  // Mini íconos con currentColor
+  const Icon = ({ type }: { type: string }) => {
+    switch (type) {
+      case 'checklist':
+        return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-90">
+          <path d="M4 7h16M4 12h5M4 17h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>;
+      case 'chat':
+        return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-90">
+          <path d="M4 6h16v9a3 3 0 0 1-3 3H9l-5 3V9a3 3 0 0 1 3-3Z" stroke="currentColor" strokeWidth="2" />
+          <path d="M8 10h8M8 13h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>;
+      case 'calendar':
+        return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-90">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+          <path d="M16 3v4M8 3v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M8 14h4l-2 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>;
+      case 'code':
+        return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-90">
+          <path d="M8 16 4 12l4-4M16 8l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M14 4 10 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>;
+      case 'shield':
+        return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-90">
+          <path d="M12 3 4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4Z" stroke="currentColor" strokeWidth="2" />
+          <path d="M9.5 12.5 11 14l3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>;
+      default: // support
+        return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-90">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+          <path d="M12 7v6l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>;
+    }
+  };
 
   return (
-    // 👇 fuerza remount cuando cambia el idioma
     <section key={lang} className="container py-16" id="por-que">
+      {/* Título + subrayado */}
       <div className="relative inline-block">
         <h2 className="text-2xl font-bold md:text-3xl">{title}</h2>
         <motion.span
           aria-hidden initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.8 }} transition={{ duration: 0.6, ease: [0.22,1,0.36,1] }}
-          className="absolute -bottom-1 left-0 h-[3px] w-full origin-left rounded bg-gradient-to-r from-teal-400 to-teal-200/60"
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.6, ease: [0.22,1,0.36,1] }}
+          className="absolute -bottom-1 left-0 h-[3px] w-full origin-left rounded"
+          style={{ background: 'linear-gradient(90deg, color-mix(in oklab, var(--acc-indigo) 40%, transparent), color-mix(in oklab, var(--acc-cyan) 40%, transparent))' }}
         />
       </div>
 
+      {/* Párrafo honesto (equipo pequeño + factura + 2 clientes) */}
+      <p className="mt-3 text-sm text-muted max-w-2xl">{honesty}</p>
+
+      {/* Razones: grid de cards (sin métricas ni portafolio) */}
       <motion.div
         variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
-        className="mt-8 grid gap-6 sm:grid-cols-2"
+        className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {items.map((it) => (
-          <motion.div key={it.title} variants={cardIn}>
-            <TiltCard>
-              <div className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur shadow-xl transition">
-                <motion.div
-                  aria-hidden
-                  className="pointer-events-none absolute -z-10 -top-10 -left-10 h-32 w-32 rounded-full
-                             bg-[radial-gradient(circle_at_center,rgba(0,179,164,0.28),transparent_60%)] blur-2xl"
-                  initial={{ opacity: 0.2, scale: 0.9 }} whileInView={{ opacity: 0.35, scale: 1 }}
-                  viewport={{ once: true }} transition={{ duration: 0.8 }}
-                />
-                <div className="relative inline-flex items-center gap-3">
-                  <motion.span
-                    className="rounded-xl bg-[var(--ac-teal)]/15 p-2.5 ring-1 ring-[var(--ac-teal)]/30 text-[var(--ac-teal)]"
-                    whileHover={{ scale: 1.03, rotate: 1 }} transition={{ duration: 0.3, ease: [0.22,1,0.36,1] }}
-                  >
-                    {it.icon}
-                  </motion.span>
+        {reasons.map((r, i) => {
+          const accent = ACCENTS[i % ACCENTS.length];
+          return (
+            <motion.div key={r.h} variants={cardIn}>
+              <TiltCard>
+                <div className="relative isolate overflow-hidden rounded-2xl border border-token bg-[color:var(--surface)] p-6 backdrop-blur shadow-token transition group">
+                  <div className="flex items-start gap-3">
+                    <span
+                      className="rounded-xl p-2.5 ring-1"
+                      style={{
+                        color: accent,
+                        background: `color-mix(in oklab, ${accent} 12%, transparent)`,
+                        borderColor: `color-mix(in oklab, ${accent} 24%, transparent)`,
+                      }}
+                    >
+                      <Icon type={r.icon} />
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-semibold group-hover:text-[color:var(--fg)]" style={{ color: 'color-mix(in oklab, var(--fg) 92%, transparent)' }}>
+                        {r.h}
+                      </h3>
+                      <p className="mt-1 text-sm text-muted">{r.p}</p>
+                      {r.badges && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {r.badges.map(b => (
+                            <span key={b} className="rounded-lg px-2.5 py-1 text-xs ring-1"
+                              style={{
+                                background: 'color-mix(in oklab, var(--surface-2), transparent 10%)',
+                                borderColor: 'var(--border)',
+                                color: 'color-mix(in oklab, var(--fg) 85%, transparent)',
+                              }}
+                            >
+                              {b}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-
-                <h3 className="mt-3 text-lg font-semibold">{it.title}</h3>
-                <p className="mt-2 text-slate-300">{it.desc}</p>
-              </div>
-            </TiltCard>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      <motion.div
-        variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
-        className="mt-10 grid gap-6 sm:grid-cols-3"
-      >
-        {metrics.map((m, i) => (
-          <motion.div
-            key={m.label} variants={cardIn}
-            className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center"
-            whileHover={{ y: -4 }} transition={{ duration: 0.35, ease: [0.22,1,0.36,1] }}
-          >
-            <CountUp
-              to={m.value} decimals={(m as any).decimals ?? 0}
-              prefix={(m as any).prefix ?? ''} suffix={(m as any).suffix ?? ''}
-              className="text-3xl font-extrabold text-[var(--ac-accent)]"
-            />
-            <div className="mt-1 text-sm text-slate-300">{m.label}</div>
-            <motion.div
-              aria-hidden className="mx-auto mt-3 h-[2px] w-10 rounded bg-gradient-to-r from-teal-400 to-teal-200/60"
-              initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.05 * i, ease: [0.22,1,0.36,1] }}
-            />
-          </motion.div>
-        ))}
+              </TiltCard>
+            </motion.div>
+          );
+        })}
       </motion.div>
     </section>
   );

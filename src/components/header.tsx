@@ -1,3 +1,4 @@
+//components/header.tsx//
 "use client";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -58,6 +59,7 @@ function LogoMark() {
         <div className="rounded-full bg-white p-1 ring-1 ring-slate-200 shadow-md">
           <Image src="/Logo_AirCoding-sin-fondo.png" alt="AirCoding" width={36} height={36} priority className="rounded-full select-none" />
         </div>
+        
       </motion.div>
     </div>
   );

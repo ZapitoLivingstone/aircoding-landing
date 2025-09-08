@@ -1,7 +1,7 @@
 "use client";
 
 import Header from '@/components/header';
-import Hero from '@/components/hero';
+import Hero from '@/components/hero/hero';
 import ServicesGrid from '@/components/services-grid';
 import WhyUs from '@/components/why-us';
 import ProcessSteps from '@/components/process-steps';
