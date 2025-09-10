@@ -2,12 +2,14 @@
 'use client';
 import Link from 'next/link';
 import { motion, type Variants, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
-import { JSX, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useI18n } from '@/providers/ui';
 
 type Key = 'web-movil' | 'software' | 'ia' | 'apis';
+type LangBlock = { title: string; desc: string; bullets: string[] };
+type CopyDict = Record<Key, { es: LangBlock; en: LangBlock }>;
 
-const copy: Record<Key, { es:{title:string, desc:string, bullets:string[]}, en:{title:string, desc:string, bullets:string[]} }> = {
+const copy: CopyDict = {
   'web-movil': {
     es: { title:'Web & Móvil', desc:'Sitios y apps de alto rendimiento listos para crecer.', bullets:['Next.js / React Native','SEO & ASO','Escalable'] },
     en: { title:'Web & Mobile', desc:'High-performance sites & apps, ready to scale.', bullets:['Next.js / React Native','SEO & ASO','Scalable'] },
@@ -26,7 +28,7 @@ const copy: Record<Key, { es:{title:string, desc:string, bullets:string[]}, en:{
   },
 };
 
-const icons: Record<Key, JSX.Element> = {
+const icons: Record<Key, React.ReactNode> = {
   'web-movil': (
     <svg width="22" height="22" viewBox="0 0 24 24" className="opacity-90">
       <rect x="3" y="4" width="14" height="10" rx="2" fill="currentColor" />
@@ -105,22 +107,19 @@ function TiltSpotlight({ children, href, accent }: { children: React.ReactNode; 
       className="group relative block rounded-2xl p-[1px] transition focus:outline-none"
       style={{
         transformStyle: "preserve-3d",
-        /* Borde con gradiente MUY sutil usando el acento */
         background: `linear-gradient(135deg, color-mix(in oklab, ${accent} 28%, transparent) 0%, transparent 60%)`,
-      } as any}
+      } as React.CSSProperties}
     >
-      {/* Spotlight */}
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         style={{
           background: `radial-gradient(550px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, ${accent} 18%, transparent) 0%, transparent 55%)`,
-        }}
+        } as React.CSSProperties}
       />
       <motion.div
-        style={{ rotateX: trx, rotateY: try_, transformStyle: "preserve-3d" }}
-        className="h-full rounded-2xl border bg-[color:var(--surface)] p-5 backdrop-blur
-                   transition group-hover:-translate-y-1"
+        style={{ rotateX: trx, rotateY: try_, transformStyle: "preserve-3d" } as React.CSSProperties}
+        className="h-full rounded-2xl border bg-[color:var(--surface)] p-5 backdrop-blur transition group-hover:-translate-y-1"
       >
         {children}
       </motion.div>
@@ -130,7 +129,11 @@ function TiltSpotlight({ children, href, accent }: { children: React.ReactNode; 
 
 export default function ServicesGrid() {
   const { lang, t } = useI18n();
-  const cards = (Object.keys(copy) as Key[]).map(k => ({ key: k, ...copy[k][lang] }));
+
+  const cards = (Object.keys(copy) as Key[]).map((k) => ({
+    key: k,
+    ...copy[k][lang],
+  }));
 
   return (
     <section id="servicios" className="container py-16">

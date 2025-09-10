@@ -1,6 +1,5 @@
 'use client';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-
+import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 /* ========== I18N ========== */
 
 export type Lang = 'es' | 'en';
@@ -118,8 +117,9 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   }, [lang]);
 
 
-  const t = (k: string) => dicts[lang][k] ?? dicts.es[k] ?? k;
-  const i18nValue = useMemo(() => ({ lang, setLang, t }), [lang]);
+  const t = useCallback((k: string) => dicts[lang][k] ?? dicts.es[k] ?? k, [lang]);
+
+  const i18nValue = useMemo(() => ({ lang, setLang, t }), [lang, t]);
 
   // Tema
   const [theme, setTheme] = useState<Theme>('dark');

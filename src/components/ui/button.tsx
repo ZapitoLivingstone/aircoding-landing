@@ -1,11 +1,23 @@
-//components/ui/button.tsx//
-import React, { ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
+// components/ui/button.tsx
+import React, {
+  ButtonHTMLAttributes,
+  AnchorHTMLAttributes,
+} from "react";
 import { twMerge } from "tailwind-merge";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useReducedMotion,
+} from "framer-motion";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" };
+type ButtonVariant = "primary" | "ghost";
 
-export function Button({ className, variant = "primary", ...props }: Props) {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: ButtonVariant;
+};
+
+export function Button({ className, variant = "primary", ...props }: ButtonProps) {
   const base =
     "inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition";
   const styles =
@@ -15,15 +27,23 @@ export function Button({ className, variant = "primary", ...props }: Props) {
   return <button className={twMerge(base, styles, className)} {...props} />;
 }
 
-/* ======== ShinyButton (reactbits-style): brillo + magnet ======== */
-type ShinyProps = {
+/* ======== ShinyButton (a|button sin any) ======== */
+type BaseShiny = {
   children: React.ReactNode;
   className?: string;
-  href?: string;
-  variant?: "primary" | "ghost";
-} & (AnchorHTMLAttributes<HTMLAnchorElement> | ButtonHTMLAttributes<HTMLButtonElement>);
+  variant?: ButtonVariant;
+};
 
-export function ShinyButton({ children, className, href, variant = "primary", ...rest }: ShinyProps) {
+type AnchorProps = BaseShiny &
+  AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
+
+type NativeButtonProps = BaseShiny &
+  ButtonHTMLAttributes<HTMLButtonElement> & { href?: undefined };
+
+export type ShinyButtonProps = AnchorProps | NativeButtonProps;
+
+export function ShinyButton(props: ShinyButtonProps) {
+  const { className, children, variant = "primary", ...rest } = props;
   const prefers = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -33,7 +53,7 @@ export function ShinyButton({ children, className, href, variant = "primary", ..
   function onMove(e: React.MouseEvent<HTMLElement>) {
     if (prefers) return;
     const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const nx = ((e.clientX - r.left) / r.width - 0.5) * 10;  // ±10px
+    const nx = ((e.clientX - r.left) / r.width - 0.5) * 10;
     const ny = ((e.clientY - r.top) / r.height - 0.5) * 10;
     x.set(nx);
     y.set(ny);
@@ -53,17 +73,52 @@ export function ShinyButton({ children, className, href, variant = "primary", ..
   const ghost =
     "text-[color:var(--fg)] border border-[color:var(--border)] backdrop-blur bg-[color-mix(in_oklab,var(--surface),transparent_10%)]";
 
-  const Comp: any = href ? "a" : "button";
+  const classes = twMerge(base, variant === "primary" ? primary : ghost, "focus-ring", className);
+
+  const MotionWrapper = (
+    <motion.div style={{ x: tx, y: ty }} className="inline-flex">
+      {/* shine */}
+      {children}
+    </motion.div>
+  );
+
+  if ("href" in props && props.href) {
+    const aProps = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
+    return (
+      <motion.div style={{ x: tx, y: ty }} className="inline-flex">
+        <a
+          {...aProps}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          className={classes}
+        >
+          <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+            <span className="absolute -inset-x-10 -top-1 h-[150%] w-[40%] rotate-[12deg] bg-gradient-to-b from-white/60 via-white/0 to-white/0 opacity-0 transition-opacity duration-300 group-hover:opacity-60" />
+          </span>
+          {children}
+          {variant === "primary" && (
+            <svg
+              className="ml-1 h-[14px] w-[14px] transition-transform duration-200 group-hover:translate-x-[2px]"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          )}
+        </a>
+      </motion.div>
+    );
+  }
+
+  const btnProps = rest as ButtonHTMLAttributes<HTMLButtonElement>;
   return (
     <motion.div style={{ x: tx, y: ty }} className="inline-flex">
-      <Comp
-        href={href as any}
+      <button
+        {...btnProps}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className={twMerge(base, variant === "primary" ? primary : ghost, "focus-ring", className)}
-        {...(rest as any)}
+        className={classes}
       >
-        {/* Shine */}
         <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
           <span className="absolute -inset-x-10 -top-1 h-[150%] w-[40%] rotate-[12deg] bg-gradient-to-b from-white/60 via-white/0 to-white/0 opacity-0 transition-opacity duration-300 group-hover:opacity-60" />
         </span>
@@ -77,7 +132,7 @@ export function ShinyButton({ children, className, href, variant = "primary", ..
             <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         )}
-      </Comp>
+      </button>
     </motion.div>
   );
 }
