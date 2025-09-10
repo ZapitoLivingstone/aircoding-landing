@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/providers/ui';
@@ -287,11 +288,11 @@ function Catalog({ kind }: { kind: ServiceKind }) {
             </div>
 
             <div className="mt-4">
-              <a href="/#contacto">
+              <Link href="/#contacto">
                 <Button>
                   {lang === 'en' ? 'Get this quote' : 'Cotizar este'}
                 </Button>
-              </a>
+              </Link>
             </div>
           </motion.div>
         ))}
@@ -316,9 +317,9 @@ export default function ServicePage(props: ServicePageProps) {
         <h1 className="text-3xl font-extrabold md:text-4xl">{props.title}</h1>
         <p className="mt-2 max-w-3xl text-slate-300">{props.summary}</p>
         <div className="mt-6">
-          <a href="/#contacto">
+          <Link href="/#contacto">
             <Button>{lang === 'en' ? 'Get a quote' : 'Cotiza tu proyecto'}</Button>
-          </a>
+          </Link>
         </div>
       </motion.div>
 

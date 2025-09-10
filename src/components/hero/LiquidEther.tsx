@@ -891,23 +891,20 @@ void main(){
         return isIOS ? THREE.HalfFloatType : THREE.FloatType;
       }
       createAllFBO() {
-        const type = this.getFloatType();
-        const opts: THREE.RenderTargetOptions = {
-        depthBuffer: false,
-        stencilBuffer: false,
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        wrapS: THREE.ClampToEdgeWrapping,
-        wrapT: THREE.ClampToEdgeWrapping,
-      };
-      // 'type' no existe en RenderTargetOptions tipado antiguo; lo seteamos al crear:
-      for (const key in this.fbos) {
-        const rt = new THREE.WebGLRenderTarget(this.fboSize.x, this.fboSize.y, opts);
-        rt.texture.type = this.getFloatType();
-        this.fbos[key] = rt;
+      const opts = {
+          type: this.getFloatType(),
+          depthBuffer: false,
+          stencilBuffer: false,
+          minFilter: THREE.LinearFilter,
+          magFilter: THREE.LinearFilter,
+          wrapS: THREE.ClampToEdgeWrapping,
+          wrapT: THREE.ClampToEdgeWrapping
+        } as const;
+        for (const key in this.fbos) {
+          this.fbos[key] = new THREE.WebGLRenderTarget(this.fboSize.x, this.fboSize.y, opts);
+        }
       }
 
-      }
       createShaderPass() {
         this.advection = new Advection({
           cellScale: this.cellScale,
