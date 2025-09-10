@@ -17,10 +17,20 @@ export default function CodeParticles() {
       {items.map((it, i) => (
         <motion.div
           key={i}
-          className="code-symbol absolute text-white"
-          style={{ left: it.x, top: it.y, fontSize: it.s }}
+          className="code-symbol absolute"
+          style={{
+            left: it.x,
+            top: it.y,
+            fontSize: it.s,
+            color: 'var(--code-color)',        // <-- usa el token del tema
+            mixBlendMode: 'normal',            // evita perderse con fondos claros
+          }}
           initial={{ opacity: 0, y: 10, rotate: it.r }}
-          animate={{ opacity: 0.22, y: [0, -6, 0], rotate: [it.r, it.r + 8, it.r] }}
+          animate={{
+            opacity: 1,                        // la “intensidad” viene del alpha del color
+            y: [0, -6, 0],
+            rotate: [it.r, it.r + 8, it.r],
+          }}
           transition={{ duration: 6, repeat: Infinity, delay: it.t, ease: 'easeInOut' }}
         >
           {it.ch}

@@ -12,6 +12,7 @@ const dicts: Dictionaries = {
     // Nav / CTAs
     nav_services: 'Servicios',
     nav_process: 'Proceso',
+    nav_projects: 'Proyectos',
     nav_contact: 'Contacto',
     cta_quote: 'Cotiza tu proyecto',
 
@@ -33,6 +34,7 @@ const dicts: Dictionaries = {
   en: {
     nav_services: 'Services',
     nav_process: 'Process',
+    nav_projects: 'Projects',
     nav_contact: 'Contact',
     cta_quote: 'Get a quote',
 

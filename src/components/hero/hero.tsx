@@ -82,6 +82,7 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: EASE }}
           >
             <TextType
+              id='hero-typed-text'
               key={lang}
               text={[t('hero_h1')]}
               as="span"
@@ -119,7 +120,7 @@ export default function Hero() {
               <Button className="w-full sm:w-auto">{t('hero_cta_primary')}</Button>
             </a>
             <a href="#servicios">
-              <Button variant="ghost" className="w-full sm:w-auto">
+              <Button id='button_service' variant="ghost" className="w-full sm:w-auto">
                 {t('hero_cta_secondary')}
               </Button>
             </a>
