@@ -107,8 +107,14 @@ export default function ContactForm() {
   const [serviceSel, setServiceSel] = useState('');
   const [timeSel, setTimeSel] = useState('');
 
-  useEffect(() => { if (Object.keys(errors).length) setErrors({}); }, [lang]);
-
+  useEffect(() => {
+    setErrors({});
+    setServiceSel('');
+    setTimeSel('');
+    setMsgLen(0);
+    setServerError(null);
+  }, [lang]);
+  
   function scrollToFirstError() {
     const first = document.querySelector('[data-error="true"]') as HTMLElement | null;
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
