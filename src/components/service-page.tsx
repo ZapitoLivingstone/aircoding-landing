@@ -81,159 +81,121 @@ type CatalogItem = {
 };
 
 const catalogAll: CatalogItem[] = [
+  // Web / Móvil
   {
     id: 'landing',
-    title: { es: 'Landing Page Profesional', en: 'Professional Landing Page' },
+    title: { es: 'Landing Page (1–3 secciones)', en: 'Landing Page (1–3 sections)' },
     includes: {
-      es: 'Página de una sección en Next.js, diseño moderno, responsive, SEO y carga rápida.',
-      en: 'One-page Next.js site, modern design, responsive, SEO and fast loading.',
+      es: 'Next.js, diseño responsive, formulario de contacto, SEO básico.',
+      en: 'Next.js, responsive design, contact form, basic SEO.',
     },
     when: {
-      es: 'Campañas publicitarias, productos específicos o presentación rápida.',
-      en: 'Ad campaigns, specific products, or quick business presentation.',
+      es: 'Presentación rápida de un servicio o campaña.',
+      en: 'Quick presentation for a service or campaign.',
     },
   },
   {
     id: 'corporate',
-    title: { es: 'Sitio Web Corporativo', en: 'Corporate Website' },
+    title: { es: 'Sitio Web Pequeño (4–5 páginas)', en: 'Small Website (4–5 pages)' },
     includes: {
-      es: '4–6 secciones (Inicio, Servicios, Nosotros, Contacto, Blog), CMS headless, hosting optimizado.',
-      en: '4–6 sections (Home, Services, About, Contact, Blog), headless CMS, optimized hosting.',
+      es: 'Secciones clave (Inicio, Servicios, Nosotros, Contacto, 1 página extra), CMS liviano.',
+      en: 'Key sections (Home, Services, About, Contact, 1 extra page), lightweight CMS.',
     },
     when: {
-      es: 'Presencia sólida en internet y autogestión de contenido.',
-      en: 'Solid online presence and self-managed content.',
+      es: 'Necesitas presencia sólida y editar contenido sin depender de terceros.',
+      en: 'You need a solid presence and self-managed content.',
     },
   },
   {
     id: 'ecommerce',
-    title: { es: 'E-commerce Escalable', en: 'Scalable E-commerce' },
+    title: { es: 'E-commerce Starter', en: 'E-commerce Starter' },
     includes: {
-      es: 'Tienda con carrito, checkout seguro, pagos (Transbank/Stripe), gestión de productos y pedidos.',
-      en: 'Store with cart, secure checkout, payments (Transbank/Stripe), product & order management.',
+      es: 'Catálogo inicial, carrito, checkout, pagos (Transbank/Stripe).',
+      en: 'Initial catalog, cart, checkout, payments (Transbank/Stripe).',
     },
     when: {
-      es: 'Vender en línea con un sistema confiable y personalizable.',
-      en: 'Sell online with a reliable and customizable system.',
-    },
-  },
-  {
-    id: 'erpcrm',
-    title: { es: 'Sistema Interno a Medida (ERP/CRM)', en: 'Custom Internal System (ERP/CRM)' },
-    includes: {
-      es: 'Login, roles, inventario/clientes, reportes y panel administrativo.',
-      en: 'Login, roles, inventory/customers, reports and admin panel.',
-    },
-    when: {
-      es: 'Optimizar procesos internos y digitalizar la gestión.',
-      en: 'Optimize internal processes and digitize operations.',
-    },
-  },
-  {
-    id: 'saas',
-    title: { es: 'Plataforma SaaS Multiusuario', en: 'Multi-tenant SaaS Platform' },
-    includes: {
-      es: 'Suscripciones, múltiples roles, tiempo real y dashboards personalizados.',
-      en: 'Subscriptions, multi-roles, real-time features and custom dashboards.',
-    },
-    when: {
-      es: 'Vender software como servicio (control de ventas, reservas, etc.).',
-      en: 'Sell software as a service (sales control, bookings, etc.).',
+      es: 'Vender en línea de forma simple (catálogo inicial, reglas claras).',
+      en: 'Sell online with a simple, starter catalog and clear rules.',
     },
   },
   {
     id: 'mvp',
-    title: { es: 'Aplicación Móvil (MVP)', en: 'Mobile App (MVP)' },
+    title: { es: 'App Móvil MVP', en: 'Mobile App MVP' },
     includes: {
-      es: 'App básica (login, CRUD, Supabase/Firebase), publicación en stores.',
-      en: 'Basic app (login, CRUD, Supabase/Firebase), store publishing.',
+      es: 'Flujo principal (login + 1 funcionalidad clave) con Supabase/Firebase.',
+      en: 'Main flow (login + 1 core feature) with Supabase/Firebase.',
     },
     when: {
-      es: 'Validar una idea de negocio en el mercado.',
-      en: 'Validate a business idea in the market.',
+      es: 'Validar una idea sin construirlo todo.',
+      en: 'Validate an idea without building everything.',
     },
   },
+
+  // Software a medida (acotado)
   {
-    id: 'mobile-mid',
-    title: { es: 'Aplicación Móvil Intermedia', en: 'Mid-level Mobile App' },
+    id: 'erpcrm',
+    title: { es: 'Panel Interno Lite', en: 'Internal Panel Lite' },
     includes: {
-      es: 'Push, pagos, múltiples roles, geolocalización básica.',
-      en: 'Push, payments, multiple roles, basic geolocation.',
+      es: 'Roles básicos, 1–2 módulos (p. ej., inventario y ventas), exportación CSV.',
+      en: 'Basic roles, 1–2 modules (e.g., inventory and sales), CSV export.',
     },
     when: {
-      es: 'Delivery, reservas o servicios on-demand.',
-      en: 'Delivery, bookings or on-demand services.',
+      es: 'Ordenar procesos y dejar planillas dispersas.',
+      en: 'Organize processes and replace scattered spreadsheets.',
     },
   },
-  {
-    id: 'marketplace',
-    title: { es: 'App Compleja / Marketplace', en: 'Complex App / Marketplace' },
-    includes: {
-      es: 'Tipo Uber/Rappi: múltiples roles, transacciones, IA y geolocalización avanzada.',
-      en: 'Uber/Rappi-style: multiple roles, transactions, AI and advanced geolocation.',
-    },
-    when: {
-      es: 'Proyectos de gran escala o startups que requieren robustez.',
-      en: 'Large-scale projects or startups requiring robustness.',
-    },
-  },
-  {
-    id: 'api-simple',
-    title: { es: 'Integración API Simple', en: 'Simple API Integration' },
-    includes: {
-      es: 'Conexión a un servicio externo (Maps, OpenAI, Stripe, Notion...).',
-      en: 'Connect to an external service (Maps, OpenAI, Stripe, Notion...).',
-    },
-    when: {
-      es: 'Añadir una función extra sin rehacer el sistema.',
-      en: 'Add a feature without rewriting your system.',
-    },
-  },
-  {
-    id: 'api-complex',
-    title: { es: 'Integración API Compleja', en: 'Complex API Integration' },
-    includes: {
-      es: 'Varias APIs (pagos + logística + reportes), automatización de flujos.',
-      en: 'Multiple APIs (payments + logistics + reports), automated workflows.',
-    },
-    when: {
-      es: 'Automatizar procesos con distintos servicios conectados.',
-      en: 'Automate processes with multiple connected services.',
-    },
-  },
+
+  // IA (enfocada y útil)
   {
     id: 'chatbot',
-    title: { es: 'Chatbot con IA (Atención al Cliente)', en: 'AI Chatbot (Customer Support)' },
+    title: { es: 'Chatbot FAQ con IA', en: 'AI FAQ Chatbot' },
     includes: {
-      es: 'OpenAI + base de conocimiento, historial en Supabase y FAQs.',
-      en: 'OpenAI + knowledge base, Supabase history and FAQs.',
+      es: 'Base de conocimiento + respuestas 24/7, registro de conversaciones.',
+      en: 'Knowledge base + 24/7 answers, conversation logs.',
     },
     when: {
-      es: 'Mejorar atención y ahorrar tiempo de soporte.',
-      en: 'Improve support and save team time.',
+      es: 'Reducir preguntas repetidas de clientes.',
+      en: 'Reduce repetitive customer questions.',
     },
   },
   {
     id: 'predictive',
-    title: { es: 'IA Predictiva y Análisis de Datos', en: 'Predictive AI & Analytics' },
+    title: { es: 'Resumen y Etiquetado con IA', en: 'AI Summaries & Tagging' },
     includes: {
-      es: 'Dashboard de métricas, predicciones y personalización.',
-      en: 'Metrics dashboard, predictions and personalization.',
+      es: 'Resúmenes de textos/correos y etiquetado automático.',
+      en: 'Summarize emails/texts and auto-tagging.',
     },
     when: {
-      es: 'Tomar decisiones estratégicas usando datos.',
-      en: 'Drive strategy with data insights.',
+      es: 'Ganas tiempo procesando información.',
+      en: 'Save time processing information.',
+    },
+  },
+
+  // Integraciones (una a la vez)
+  {
+    id: 'api-simple',
+    title: { es: 'Integración API única', en: 'Single API Integration' },
+    includes: {
+      es: 'Conectar un servicio (Stripe/Transbank, Notion/Sheets, Chilexpress/Starken).',
+      en: 'Connect one service (Stripe/Transbank, Notion/Sheets, Chilexpress/Starken).',
+    },
+    when: {
+      es: 'Agregar una función sin rehacer tu sistema.',
+      en: 'Add a feature without rewriting your system.',
     },
   },
 ];
 
-/* qué mostrar por servicio */
 const pickByKind: Record<ServiceKind, string[]> = {
-  'web-movil': ['landing', 'corporate', 'ecommerce', 'mvp', 'mobile-mid', 'marketplace'],
-  software: ['erpcrm', 'saas', 'marketplace'],
+  'web-movil': ['landing', 'corporate', 'ecommerce', 'mvp'],
+  software: ['erpcrm'],
   ia: ['chatbot', 'predictive'],
-  apis: ['api-simple', 'api-complex'],
+  apis: ['api-simple'],
 };
+
+
+/* qué mostrar por servicio */
+
 
 function Catalog({ kind }: { kind: ServiceKind }) {
   const { lang } = useI18n();

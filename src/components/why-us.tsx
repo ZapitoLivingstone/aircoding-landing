@@ -33,8 +33,6 @@ export default function WhyUs() {
 
   // Mensaje honesto: empresa/equipo pequeño (actualmente 1), 2 clientes, factura
   const honesty = lang === 'en'
-    ? 'We’re a small, transparent team (currently one person). I’ve worked with 2 clients so far. I can issue invoices and I’m clear about scope, timelines and costs.'
-    : 'Somos un equipo pequeño y transparente (actualmente una persona). He trabajado con 2 clientes hasta ahora. Puedo emitir factura y soy claro con el alcance, plazos y costos.';
 
   // Razones para trabajar con AirCoding (sin métricas ni portafolio aquí)
   const reasons = useMemo(() => (

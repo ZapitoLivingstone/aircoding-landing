@@ -5,8 +5,7 @@ import Hero from '@/components/hero/hero';
 import ServicesGrid from '@/components/services-grid';
 import WhyUs from '@/components/why-us';
 import ProcessSteps from '@/components/process-steps';
-import Showcase from '@/components/showcase';
-import Testimonials from '@/components/testimonials';
+import Testimonials from '@/components/value-props';
 import CTABanner from '@/components/cta-banner';
 import ContactForm from '@/components/contact-form';
 import Footer from '@/components/footer'; // <-- nuevo
@@ -23,9 +22,9 @@ export default function Page() {
         <ServicesGrid />
         <WhyUs />
         <ProcessSteps />
-        <Showcase />
-        <Testimonials />
         <CTABanner />
+        <Testimonials />
+        
 
         <section id="contacto" className="container pb-24">
           <h2 className="text-2xl font-bold md:text-3xl">{t('contact_title') ?? 'Contáctanos'}</h2>

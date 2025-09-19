@@ -237,7 +237,7 @@ export default function ContactForm() {
       </div>
 
       {/* Servicio (select más oscuro) */}
-      <div className="md:col-span-1">
+      <div className="md:col-span-1" id ="service-group">
         <label htmlFor="service" className="mb-1 block text-sm">{TXT.service}</label>
         <select
           id="service" name="service" defaultValue=""
@@ -249,22 +249,6 @@ export default function ContactForm() {
           <option value="software">{TXT.optSoftware}</option>
           <option value="ia">{TXT.optIA}</option>
           <option value="apis">{TXT.optAPIs}</option>
-        </select>
-      </div>
-
-      {/* Plazo (select más oscuro) */}
-      <div className="md:col-span-1">
-        <label htmlFor="timeframe" className="mb-1 block text-sm">{TXT.timeframe}</label>
-        <select
-          id="timeframe" name="timeframe" defaultValue=""
-          onChange={(e) => setTimeSel(e.currentTarget.value)}
-          className={`${selectBase} ${timeSel ? selectValue : selectPlaceholder}`}
-        >
-          <option value="" disabled>{TXT.placeholderTimeframe}</option>
-          <option value="urgent">{TXT.tUrgent}</option>
-          <option value="month">{TXT.tMonth}</option>
-          <option value="quarter">{TXT.tQuarter}</option>
-          <option value="na">{TXT.tNA}</option>
         </select>
       </div>
 

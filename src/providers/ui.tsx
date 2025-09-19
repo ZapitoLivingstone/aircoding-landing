@@ -17,9 +17,8 @@ const dicts: Dictionaries = {
     cta_quote: 'Cotiza tu proyecto',
 
     // Hero
-    hero_h1: 'Software y apps que hacen crecer tu negocio.',
-    hero_sub:
-      'Web & Móvil, Software a medida, Soluciones de IA e Integración de APIs. Rápido, moderno y sin complicaciones.',
+    hero_h1: "Software moderno que hará crecer tu negocio.",
+    hero_sub:"Soluciones digitales a medida, listas para crecer contigo." ,
     hero_cta_primary: 'Cotiza tu proyecto',
     hero_cta_secondary: 'Ver servicios',
 
@@ -38,9 +37,8 @@ const dicts: Dictionaries = {
     nav_contact: 'Contact',
     cta_quote: 'Get a quote',
 
-    hero_h1: 'Software & apps that grow your business.',
-    hero_sub:
-      'Web & Mobile, Custom Software, AI Solutions and API Integrations. Fast, modern and hassle-free.',
+    hero_h1: 'Modern software that will grow your business.',
+    hero_sub:"Tailored digital solutions, built to grow with you.",
     hero_cta_primary: 'Get a quote',
     hero_cta_secondary: 'See services',
 

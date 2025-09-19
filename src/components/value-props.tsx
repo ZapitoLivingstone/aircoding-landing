@@ -4,7 +4,6 @@ import { useI18n } from '@/providers/ui';
 import { useMemo } from 'react';
 
 type IconName = 'clarity' | 'communication' | 'milestones' | 'maintainable' | 'security' | 'support';
-
 type Commitment = { icon: IconName; h: string; p: string };
 type Benefit = { h: string; p: string };
 
@@ -22,10 +21,9 @@ const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07 } },
 };
-
 const itemIn: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
 };
 
 function Icon({ name }: { name: IconName }) {
@@ -69,62 +67,51 @@ function Icon({ name }: { name: IconName }) {
   }
 }
 
+/** Texto reducido y enfocado en conversión */
 const TEXT: Record<'en' | 'es', Content> = {
   en: {
-    titleA: 'Our commitments',
-    subtitleA: 'How we work with you',
-    titleB: 'What you get with AirCoding',
-    subtitleB: 'Tangible benefits in every project',
+    titleA: 'How we work',
+    subtitleA: 'Clear, collaborative, accountable.',
+    titleB: 'What you get',
+    subtitleB: 'Real value from day one.',
     commitments: [
-      { icon:'clarity',       h:'Transparent scope & pricing', p:'Clear proposals, fixed milestones and weekly updates. No hidden fees.' },
-      { icon:'communication', h:'Direct communication',        p:'You talk to the person who builds. Fewer layers, faster feedback.' },
-      { icon:'milestones',    h:'Milestone delivery',          p:'Short iterations with demos to validate early and reduce risk.' },
-      { icon:'maintainable',  h:'Maintainable code',           p:'Clean architecture, docs and handover. Built to evolve.' },
-      { icon:'security',      h:'Security & privacy first',    p:'Good practices by default and basic data protection hygiene.' },
-      { icon:'support',       h:'Post-launch support',         p:'Monitoring and improvement cycles after go-live.' },
+      { icon: 'clarity',       h: 'Clear scope & price',  p: 'Straightforward proposals and fixed milestones.' },
+      { icon: 'communication', h: 'Direct communication', p: 'Talk to the actual builder. Faster feedback.' },
+      { icon: 'milestones',    h: 'Visible progress',     p: 'Short sprints with demos to reduce risk.' },
     ],
     benefits: [
-      { h:'Invoices & contracts', p:'Formal quotes, invoicing and NDA on request.' },
-      { h:'Accessibility & performance', p:'A11y, Core Web Vitals and sensible defaults.' },
-      { h:'Ownership', p:'Your code, your infrastructure, your data.' },
-      { h:'Small team reliability', p:'We are a small, transparent team (currently one person).' },
-      { h:'Modern stack', p:'Next.js, Tailwind, Shopify, and well-supported services.' },
-      { h:'Clear handoff', p:'Docs + walkthrough to operate without friction.' },
+      { h: 'Ownership',          p: 'Your code, infrastructure and data.' },
+      { h: 'Post-launch support',p: 'Monitoring and iterative improvements.' },
+      { h: 'Performance & A11y', p: 'Fast, accessible, modern experiences.' },
     ],
-    note: 'Invoices available • Clear scope before we start.',
+    note: 'Formal contract & invoice • 24h response time.',
   },
   es: {
-    titleA: 'Nuestros compromisos',
-    subtitleA: 'Cómo trabajamos contigo',
-    titleB: 'Lo que obtienes con AirCoding',
-    subtitleB: 'Beneficios tangibles en cada proyecto',
+    titleA: 'Cómo trabajamos',
+    subtitleA: 'Claro, colaborativo y responsable.',
+    titleB: 'Lo que obtienes',
+    subtitleB: 'Valor real desde el primer día.',
     commitments: [
-      { icon:'clarity',       h:'Alcance y precio transparentes', p:'Propuestas claras, hitos definidos y reportes semanales. Sin costos ocultos.' },
-      { icon:'communication', h:'Comunicación directa',           p:'Hablas con quien construye. Menos capas, feedback más rápido.' },
-      { icon:'milestones',    h:'Entregas por hitos',             p:'Iteraciones cortas con demos para validar temprano y reducir riesgo.' },
-      { icon:'maintainable',  h:'Código mantenible',              p:'Arquitectura limpia, documentación y traspaso. Pensado para crecer.' },
-      { icon:'security',      h:'Seguridad y privacidad primero', p:'Buenas prácticas por defecto y cuidado básico de datos.' },
-      { icon:'support',       h:'Soporte post-lanzamiento',       p:'Monitoreo y ciclos de mejora después del go-live.' },
+      { icon: 'clarity',       h: 'Alcance y precio claros', p: 'Propuestas directas y hitos definidos.' },
+      { icon: 'communication', h: 'Comunicación directa',    p: 'Hablas con quien construye. Feedback rápido.' },
+      { icon: 'milestones',    h: 'Avances visibles',        p: 'Sprints cortos con demos para reducir riesgo.' },
     ],
     benefits: [
-      { h:'Facturas y contratos', p:'Cotización formal, emisión de factura y NDA si se requiere.' },
-      { h:'Accesibilidad y performance', p:'A11y, Core Web Vitals y defaults sensatos.' },
-      { h:'Propiedad', p:'Tu código, tu infraestructura, tus datos.' },
-      { h:'Equipo pequeño confiable', p:'Somos un equipo pequeño y transparente (actualmente una persona).' },
-      { h:'Stack moderno', p:'Next.js, Tailwind, Shopify y servicios bien soportados.' },
-      { h:'Traspaso claro', p:'Docs + walkthrough para operar sin fricción.' },
+      { h: 'Propiedad total',        p: 'Tu código, tu infraestructura y tus datos.' },
+      { h: 'Soporte post-lanzamiento', p: 'Monitoreo y mejoras iterativas.' },
+      { h: 'Rendimiento y A11y',     p: 'Experiencias rápidas, accesibles y modernas.' },
     ],
-    note: 'Emito factura • Alcance claro antes de comenzar.',
+    note: 'Contrato y factura • Respuesta en 24h.',
   },
 };
 
-export default function Testimonials() {
+export default function ValueProps() {
   const { lang } = useI18n();
   const t = useMemo<Content>(() => (lang === 'en' ? TEXT.en : TEXT.es), [lang]);
 
   return (
-    <section className="container py-16" id="compromisos" key={lang}>
-      {/* Bloque A: Compromisos */}
+    <section className="container py-16" id="valor" key={lang}>
+      {/* A) Compromisos */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold md:text-3xl">{t.titleA}</h2>
         <p className="mt-1 text-sm text-muted">{t.subtitleA}</p>
@@ -144,7 +131,6 @@ export default function Testimonials() {
             className="group relative overflow-hidden rounded-2xl border bg-[color:var(--surface)] p-6 backdrop-blur shadow-token"
             style={{ borderColor: 'var(--border)' }}
           >
-            {/* halo sutil */}
             <span
               aria-hidden
               className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full blur-2xl"
@@ -168,14 +154,13 @@ export default function Testimonials() {
               <div>
                 <h3 className="text-lg font-semibold">{c.h}</h3>
                 <p className="mt-1 text-sm text-muted">{c.p}</p>
-                <span className="sr-only">{c.h}</span>
               </div>
             </div>
           </motion.article>
         ))}
       </motion.div>
 
-      {/* Bloque B: Beneficios */}
+      {/* B) Beneficios */}
       <div className="mt-14 mb-6">
         <h2 className="text-2xl font-bold md:text-3xl">{t.titleB}</h2>
         <p className="mt-1 text-sm text-muted">{t.subtitleB}</p>
@@ -193,7 +178,7 @@ export default function Testimonials() {
             key={`benefit-${b.h}`}
             variants={itemIn}
             whileHover={{ y: -4 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-2xl border bg-[color:var(--surface)] p-6 backdrop-blur shadow-token"
             style={{ borderColor: 'var(--border)' }}
           >
@@ -205,7 +190,7 @@ export default function Testimonials() {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.05 * i, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.45, delay: 0.05 * i, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 background:
                   'linear-gradient(90deg, color-mix(in oklab, var(--acc-indigo) 42%, transparent), color-mix(in oklab, var(--acc-cyan) 42%, transparent))',
@@ -215,7 +200,7 @@ export default function Testimonials() {
         ))}
       </motion.div>
 
-      {/* Nota (sin CTA de llamada) */}
+      {/* Nota final (sin CTA redundante) */}
       <div className="mt-10 flex flex-col items-center gap-3 text-center">
         <p className="text-sm text-muted">{t.note}</p>
       </div>

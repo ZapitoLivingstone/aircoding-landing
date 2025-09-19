@@ -366,3 +366,4 @@ a:focus-visible, button:focus-visible { outline: none; }
   border-color: color-mix(in oklab, var(--border) 90%, black 0%);
   color: var(--fg);
 }
+

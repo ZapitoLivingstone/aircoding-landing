@@ -70,6 +70,51 @@ function LogoMark() {
   );
 }
 
+function StickyQuoteCTA({
+  label,
+  hidden,
+  open,
+}: {
+  label: string;
+  hidden: boolean;
+  open: boolean;
+}) {
+  // No estorbar cuando el panel móvil está abierto
+  if (open) return null;
+
+  return (
+    <AnimatePresence>
+      {/* Mostrar siempre; si prefieres solo cuando el header esté oculto, usa: hidden && (...) */}
+      <motion.a
+        href="#contacto"
+        aria-label={label}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 24 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        className="
+          fixed z-[59]
+          right-4 bottom-[calc(1rem+env(safe-area-inset-bottom,0))]
+          md:right-6 md:bottom-6
+          pointer-events-auto
+        "
+      >
+        <Button
+          className="
+            shadow-lg md:shadow-xl
+            px-4 md:px-5
+            h-10 md:h-11
+            rounded-full
+          "
+        >
+          {label}
+        </Button>
+      </motion.a>
+    </AnimatePresence>
+  );
+}
+
+
 /** Utilidad: lock de scroll cuando el menú móvil está abierto */
 function useLockBody(lock: boolean) {
   useEffect(() => {
@@ -159,7 +204,7 @@ export default function Header() {
             <NavLink href="#servicios">{t("nav_services")}</NavLink>
             <NavLink href="#proyectos">{t("nav_projects") ?? "Showcase"}</NavLink>
             <NavLink href="#proceso">{t("nav_process")}</NavLink>
-            <NavLink href="#contacto">{t("nav_contact")}</NavLink>
+
 
             <div className="flex items-center gap-2">
               {/* Toggle idioma */}
@@ -182,9 +227,7 @@ export default function Header() {
                 {theme === "dark" ? "☀︎" : "🌙"}
               </button>
 
-              <a href="#contacto" className="hidden lg:inline">
-                <Button>{t("cta_quote")}</Button>
-              </a>
+
             </div>
           </nav>
 
@@ -264,10 +307,9 @@ export default function Header() {
 
               <nav className="px-4 pb-6 pt-2">
                 <ul className="grid gap-2 text-base">
-                  <li><NavLink href="#servicios" onClick={() => setOpen(false)}>{t("nav_services")}</NavLink></li>
+                  <li><NavLink href="/servicios" onClick={() => setOpen(false)}>{t("nav_services")}</NavLink></li>
                   <li><NavLink href="#proyectos" onClick={() => setOpen(false)}>{t("nav_projects") ?? "Showcase"}</NavLink></li>
                   <li><NavLink href="#proceso" onClick={() => setOpen(false)}>{t("nav_process")}</NavLink></li>
-                  <li><NavLink href="#contacto" onClick={() => setOpen(false)}>{t("nav_contact")}</NavLink></li>
                 </ul>
 
                 <div className="mt-6 grid grid-cols-2 gap-2">
@@ -289,17 +331,13 @@ export default function Header() {
                   </button>
                 </div>
 
-                <div className="mt-4">
-                  <a href="#contacto" onClick={() => setOpen(false)}>
-                    <Button className="w-full">{t("cta_quote")}</Button>
-                  </a>
-                </div>
+
               </nav>
             </motion.div>
           </>
         )}
       </AnimatePresence>
-
+      <StickyQuoteCTA label={t("cta_quote")} hidden={hidden} open={open} />
       {/* Spacer para que el contenido no quede bajo el header fijo */}
       <div aria-hidden className="h-16" />
     </>
