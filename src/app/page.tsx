@@ -4,7 +4,6 @@ import Header from '@/components/header';
 import Hero from '@/components/hero/hero';
 import ServicesGrid from '@/components/services-grid';
 import WhyUs from '@/components/why-us';
-import ProcessSteps from '@/components/process-steps';
 import Testimonials from '@/components/value-props';
 import CTABanner from '@/components/cta-banner';
 import ContactForm from '@/components/contact-form';
@@ -21,7 +20,6 @@ export default function Page() {
         <Hero />
         <ServicesGrid />
         <WhyUs />
-        <ProcessSteps />
         <CTABanner />
         <Testimonials />
         
