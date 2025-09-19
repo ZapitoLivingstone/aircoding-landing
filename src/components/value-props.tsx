@@ -4,15 +4,11 @@ import { useI18n } from '@/providers/ui';
 import { useMemo } from 'react';
 
 type IconName = 'clarity' | 'communication' | 'milestones' | 'maintainable' | 'security' | 'support';
-type Commitment = { icon: IconName; h: string; p: string };
 type Benefit = { h: string; p: string };
 
 type Content = {
-  titleA: string;
-  subtitleA: string;
   titleB: string;
   subtitleB: string;
-  commitments: Commitment[];
   benefits: Benefit[];
   note: string;
 };
@@ -70,15 +66,8 @@ function Icon({ name }: { name: IconName }) {
 /** Texto reducido y enfocado en conversión */
 const TEXT: Record<'en' | 'es', Content> = {
   en: {
-    titleA: 'How we work',
-    subtitleA: 'Clear, collaborative, accountable.',
     titleB: 'What you get',
     subtitleB: 'Real value from day one.',
-    commitments: [
-      { icon: 'clarity',       h: 'Clear scope & price',  p: 'Straightforward proposals and fixed milestones.' },
-      { icon: 'communication', h: 'Direct communication', p: 'Talk to the actual builder. Faster feedback.' },
-      { icon: 'milestones',    h: 'Visible progress',     p: 'Short sprints with demos to reduce risk.' },
-    ],
     benefits: [
       { h: 'Ownership',          p: 'Your code, infrastructure and data.' },
       { h: 'Post-launch support',p: 'Monitoring and iterative improvements.' },
@@ -87,15 +76,9 @@ const TEXT: Record<'en' | 'es', Content> = {
     note: 'Formal contract & invoice • 24h response time.',
   },
   es: {
-    titleA: 'Cómo trabajamos',
-    subtitleA: 'Claro, colaborativo y responsable.',
     titleB: 'Lo que obtienes',
     subtitleB: 'Valor real desde el primer día.',
-    commitments: [
-      { icon: 'clarity',       h: 'Alcance y precio claros', p: 'Propuestas directas y hitos definidos.' },
-      { icon: 'communication', h: 'Comunicación directa',    p: 'Hablas con quien construye. Feedback rápido.' },
-      { icon: 'milestones',    h: 'Avances visibles',        p: 'Sprints cortos con demos para reducir riesgo.' },
-    ],
+
     benefits: [
       { h: 'Propiedad total',        p: 'Tu código, tu infraestructura y tus datos.' },
       { h: 'Soporte post-lanzamiento', p: 'Monitoreo y mejoras iterativas.' },
@@ -111,60 +94,9 @@ export default function ValueProps() {
 
   return (
     <section className="container py-16" id="valor" key={lang}>
-      {/* A) Compromisos */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold md:text-3xl">{t.titleA}</h2>
-        <p className="mt-1 text-sm text-muted">{t.subtitleA}</p>
-      </div>
-
-      <motion.div
-        variants={container}
-        initial={false}
-        whileInView="show"
-        viewport={{ once: false, amount: 0.25 }}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-      >
-        {t.commitments.map((c) => (
-          <motion.article
-            key={`commit-${c.h}`}
-            variants={itemIn}
-            className="group relative overflow-hidden rounded-2xl border bg-[color:var(--surface)] p-6 backdrop-blur shadow-token"
-            style={{ borderColor: 'var(--border)' }}
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full blur-2xl"
-              style={{
-                background:
-                  'radial-gradient(circle at center, color-mix(in oklab, var(--acc-indigo) 18%, transparent), transparent 60%)',
-                opacity: 0.22,
-              }}
-            />
-            <div className="flex items-start gap-3">
-              <span
-                className="rounded-xl p-2.5 ring-1"
-                style={{
-                  color: 'oklch(0.73 0.15 264)',
-                  background: 'color-mix(in oklab, oklch(0.73 0.15 264) 12%, transparent)',
-                  borderColor: 'color-mix(in oklab, oklch(0.73 0.15 264) 24%, transparent)',
-                }}
-              >
-                <Icon name={c.icon} />
-              </span>
-              <div>
-                <h3 className="text-lg font-semibold">{c.h}</h3>
-                <p className="mt-1 text-sm text-muted">{c.p}</p>
-              </div>
-            </div>
-          </motion.article>
-        ))}
-      </motion.div>
-
       {/* B) Beneficios */}
-      <div className="mt-14 mb-6">
         <h2 className="text-2xl font-bold md:text-3xl">{t.titleB}</h2>
         <p className="mt-1 text-sm text-muted">{t.subtitleB}</p>
-      </div>
 
       <motion.div
         variants={container}

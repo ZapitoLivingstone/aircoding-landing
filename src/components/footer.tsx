@@ -162,15 +162,6 @@ export default function Footer() {
         {/* Bottom row: legal */}
         <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-token py-5 text-center text-xs text-muted sm:flex-row sm:text-left">
           <div>© {year} AirCoding — {copy.rights}</div>
-          <div className="flex items-center gap-3">
-            <Link href="#proyectos" className="underline hover:no-underline">
-              {copy.projects}
-            </Link>
-            <span aria-hidden className="text-muted">•</span>
-            <Link href="#contacto" className="underline hover:no-underline">
-              {copy.contact}
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

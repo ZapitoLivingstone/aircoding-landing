@@ -7,7 +7,7 @@ import WhyUs from '@/components/why-us';
 import Testimonials from '@/components/value-props';
 import CTABanner from '@/components/cta-banner';
 import ContactForm from '@/components/contact-form';
-import Footer from '@/components/footer'; // <-- nuevo
+import Footer from '@/components/footer'; 
 import { useI18n } from '@/providers/ui';
 
 export default function Page() {
