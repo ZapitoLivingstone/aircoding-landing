@@ -38,7 +38,7 @@ export default function WhyUs() {
   const reasons = useMemo(() => (
     lang === 'en'
       ? [
-          { h:'Transparent process', p:'Clear proposals, fixed milestones and weekly updates. No hidden fees.', icon:'checklist', badges:['Invoices', 'Formal quotes', 'NDA on request'] },
+          { h:'Transparent process', p:'Clear proposals, fixed milestones and weekly updates. No hidden fees.', icon:'checklist', badges:['Invoices', 'Formal quotes'] },
           { h:'Direct communication', p:'You talk to the person who builds. Fewer layers, faster feedback.', icon:'chat' },
           { h:'Milestone delivery', p:'Short iterations with demos. Scope managed in small, visible steps.', icon:'calendar' },
           { h:'Maintainable code', p:'Clean architecture, docs and handover. Built to evolve, not just to launch.', icon:'code' },
@@ -46,7 +46,7 @@ export default function WhyUs() {
           { h:'Post-launch support', p:'Monitoring and improvement cycles after go-live.', icon:'support' },
         ]
       : [
-          { h:'Proceso transparente', p:'Propuestas claras, hitos definidos y reportes semanales. Sin costos ocultos.', icon:'checklist', badges:['Factura', 'Cotización formal', 'NDA si se requiere'] },
+          { h:'Proceso transparente', p:'Propuestas claras, hitos definidos y reportes semanales. Sin costos ocultos.', icon:'checklist', badges:['Factura', 'Cotización formal'] },
           { h:'Comunicación directa', p:'Hablas con quien construye. Menos capas, feedback más rápido.', icon:'chat' },
           { h:'Entregas por hitos', p:'Iteraciones cortas con demos. Alcance gestionado en pasos visibles.', icon:'calendar' },
           { h:'Código mantenible', p:'Arquitectura limpia, documentación y traspaso. Pensado para crecer.', icon:'code' },

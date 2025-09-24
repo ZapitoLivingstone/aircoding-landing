@@ -11,8 +11,8 @@ type CopyDict = Record<Key, { es: LangBlock; en: LangBlock }>;
 
 const copy: CopyDict = {
   'web-movil': {
-    es: { title:'Web & Móvil', desc:'Sitios y apps de alto rendimiento listos para crecer.', bullets:['Next.js / React Native','SEO & ASO','Escalable'] },
-    en: { title:'Web & Mobile', desc:'High-performance sites & apps, ready to scale.', bullets:['Next.js / React Native','SEO & ASO','Scalable'] },
+    es: { title:'Web & Móvil', desc:'Sitios y apps de alto rendimiento listos para crecer.', bullets:['SEO & ASO','Escalable'] },
+    en: { title:'Web & Mobile', desc:'High-performance sites & apps, ready to scale.', bullets:['SEO & ASO','Scalable'] },
   },
   software: {
     es: { title:'Software a medida', desc:'Tu proceso, tu herramienta. Automatiza y ordena.', bullets:['Procesos ágiles','Seguridad','Soporte'] },

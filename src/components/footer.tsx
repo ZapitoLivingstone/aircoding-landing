@@ -10,8 +10,7 @@ type Social = "instagram" | "tiktok" | "linkedin" | "github";
 const socials: { id: Social; href: string; label: { es: string; en: string } }[] = [
   { id: "instagram", href: "https://instagram.com/aircodingspa", label: { es: "Instagram", en: "Instagram" } },
   { id: "tiktok",    href: "https://tiktok.com/@aircoding",      label: { es: "TikTok",    en: "TikTok"    } },
-  { id: "linkedin",  href: "https://www.linkedin.com/company/aircoding", label: { es: "LinkedIn",  en: "LinkedIn"  } },
-  { id: "github",    href: "https://github.com/aircoding",        label: { es: "GitHub",    en: "GitHub"    } },
+  { id: "github",    href: "https://github.com/ZapitoLivingstone",        label: { es: "GitHub",    en: "GitHub"    } },
 ];
 
 function SocialIcon({ id }: { id: Social }) {
@@ -29,15 +28,6 @@ function SocialIcon({ id }: { id: Social }) {
       return (
         <svg className={base} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path d="M14 3v8.2a4.2 4.2 0 1 1-3.2-4.07V10a2.2 2.2 0 1 0 2.2 2.2V3h1ZM15 3c.63 1.9 2.36 3.32 4.44 3.53V9.2c-1.96 0-3.77-.68-4.44-1.6V3Z" fill="currentColor"/>
-        </svg>
-      );
-    case "linkedin":
-      return (
-        <svg className={base} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-          <rect x="6" y="10" width="3" height="8" fill="currentColor" />
-          <rect x="6" y="6" width="3" height="3" fill="currentColor" />
-          <path d="M12 10h3v1.6c.5-.95 1.65-1.8 3.4-1.6V18h-3v-4c0-1.2-1.2-1.7-2.1-1.3-.2.1-.3.2-.3.3V18h-3v-8Z" fill="currentColor"/>
         </svg>
       );
     case "github":

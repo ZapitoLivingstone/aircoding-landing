@@ -1,0 +1,31 @@
+:root {
+  color-scheme: dark;
+
+  /* Brand / accent principal */
+  --ac-accent: 34 184 207; /* #22b8cf en RGB */
+
+  /* Tema oscuro (valores base en RGB para usar con Tailwind) */
+  --bg-rgb: 11 18 32;        /* #0b1220 */
+  --fg-rgb: 230 234 242;     /* #e6eaf2 */
+  --muted-rgb: 120 135 155;  /* similar slate-500 */
+  --surface-rgb: 31 41 55;   /* glass oscuro */
+  --border-rgb: 148 163 184; /* slate-ish */
+  --ring-rgb: 99 102 241;    /* indigo-500 */
+  --accent-rgb: var(--ac-accent);
+
+  --radius: 14px;
+  --shadow-md: 0 10px 30px -12px rgba(0,0,0,.35);
+  --shadow-lg: 0 18px 50px -20px rgba(0,0,0,.45);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-rgb: 255 255 255;      /* #fff */
+  --fg-rgb: 15 23 42;         /* slate-900 */
+  --muted-rgb: 71 85 105;     /* slate-600 */
+  --surface-rgb: 241 245 249; /* slate-100-ish */
+  --border-rgb: 203 213 225;  /* slate-300 */
+  --ring-rgb: 99 102 241;     /* indigo-500 */
+  --accent-rgb: var(--ac-accent);
+}

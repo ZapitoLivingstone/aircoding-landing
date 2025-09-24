@@ -82,9 +82,9 @@ const TEXT: Record<'en' | 'es', Content> = {
     benefits: [
       { h: 'Propiedad total',        p: 'Tu código, tu infraestructura y tus datos.' },
       { h: 'Soporte post-lanzamiento', p: 'Monitoreo y mejoras iterativas.' },
-      { h: 'Rendimiento y A11y',     p: 'Experiencias rápidas, accesibles y modernas.' },
+      { h: 'Rendimiento',     p: 'Experiencias rápidas, accesibles y modernas.' },
     ],
-    note: 'Contrato y factura • Respuesta en 24h.',
+    note: 'factura • Respuesta en 24h.',
   },
 };
 

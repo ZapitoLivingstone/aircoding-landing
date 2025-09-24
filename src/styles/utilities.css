@@ -1,0 +1,43 @@
+@layer base {
+  html, body { background-color: rgb(var(--bg-rgb)); color: rgb(var(--fg-rgb)); }
+  body { -webkit-tap-highlight-color: transparent; }
+  ::selection { background: rgba(var(--ring-rgb), .25); color: rgb(var(--fg-rgb)); }
+}
+
+@layer utilities {
+  /* Layout */
+  .container-token { @apply mx-auto max-w-6xl px-4; }
+
+  /* Texto y bordes */
+  .text-muted   { color: rgb(var(--muted-rgb)); }
+  .bg-surface   { background-color: rgb(var(--surface-rgb)); }
+  .border-token { border-color: rgb(var(--border-rgb)); }
+
+  /* Cards */
+  .card {
+    @apply bg-surface border border-token rounded-token backdrop-blur-md shadow-token transition;
+  }
+  .card:hover { @apply -translate-y-0.5 shadow-token-lg; }
+
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-[calc(var(--radius)-2px)]
+           px-4 py-3 border text-sm font-medium transition;
+  }
+  .btn-primary {
+    color: white;
+    background: linear-gradient(180deg,
+      rgba(var(--accent-rgb), .95),
+      rgba(var(--ring-rgb), .95)
+    );
+    border-color: rgba(var(--accent-rgb), .35);
+    box-shadow: 0 10px 28px rgba(var(--accent-rgb), .24);
+  }
+  .btn-primary:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+  .btn-ghost { @apply bg-surface border border-token; }
+  .btn-ghost:hover { @apply -translate-y-0.5; }
+
+  /* Accesibilidad */
+  .focus-ring:focus-visible { box-shadow: 0 0 0 3px rgba(var(--ring-rgb), .6); }
+}

@@ -1,0 +1,20 @@
+@layer components {
+  .hero {
+    @apply relative overflow-hidden rounded-2xl border border-token;
+    background:
+      radial-gradient(40% 50% at 18% 15%, rgba(var(--ring-rgb), .12), transparent 60%),
+      radial-gradient(38% 48% at 82% 20%, rgba(var(--accent-rgb), .10), transparent 65%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero::after {
+      content:""; position:absolute; inset:-20% -10% auto -6%;
+      background: conic-gradient(from 0deg,
+        rgba(var(--ring-rgb), .10), rgba(var(--accent-rgb), .10), transparent 60%);
+      filter: blur(48px); opacity:.5; z-index:-1; animation: hero-spin 56s linear infinite;
+    }
+    @keyframes hero-spin { to { transform: rotate(360deg); } }
+  }
+
+  .pill { @apply inline-flex items-center rounded-full px-3 py-1 text-xs border border-token; }
+}
