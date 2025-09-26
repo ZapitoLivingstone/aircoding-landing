@@ -181,9 +181,6 @@ export default function ContactForm() {
           {TXT.sentTitle}
         </p>
         <p className="mt-1 text-muted">{TXT.sentBody}</p>
-        <a href="#cta" className="mt-4 inline-flex btn-hero focus-ring">
-          {lang === 'en' ? 'Back to CTA' : 'Volver al CTA'}
-        </a>
       </motion.div>
     );
   }
