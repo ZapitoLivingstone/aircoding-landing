@@ -1,3 +1,4 @@
+// src/app/api/lead/route.ts
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
 
@@ -13,29 +14,24 @@ const LeadSchema = z.object({
 
 function createTransport() {
   const host = process.env.SMTP_HOST!;
-  const port = Number(process.env.SMTP_PORT ?? 587); // <-- prueba 587 por defecto
-  // secure true SOLO para 465, false para 587 (STARTTLS)
-  const secure = port === 465 ? true : false;
-
+  const port = Number(process.env.SMTP_PORT ?? 587);
+  const secure = port === 465;
   const user = process.env.SMTP_USER!;
   const pass = process.env.SMTP_PASS!;
-
-  // timeouts y TLS más explícitos
   return nodemailer.createTransport({
-    host,
-    port,
-    secure,
+    host, port, secure,
     auth: { user, pass },
-    requireTLS: !secure,         // STARTTLS en 587
-    connectionTimeout: 10000,    // 10s
+    requireTLS: !secure,
+    connectionTimeout: 10000,
     greetingTimeout: 8000,
     socketTimeout: 15000,
-    tls: {
-      // si tu servidor requiere ciphers modernos, puedes ajustar aquí
-      // ciphers: 'TLSv1.2',
-      // rejectUnauthorized: true, // por seguridad; déjalo true si tu CA es válida
-    },
   });
+}
+
+// 👇 helper segura para sacar mensaje de error sin usar 'any'
+function errMessage(e: unknown): string {
+  if (e instanceof Error) return e.message;
+  try { return JSON.stringify(e); } catch { return String(e); }
 }
 
 export async function POST(req: Request) {
@@ -50,7 +46,6 @@ export async function POST(req: Request) {
     const { name, email, service, message, website } = parsed.data;
     if (website && website.trim() !== '') return Response.json({ ok: true });
 
-    // Validación rápida de envs en runtime
     const missing = ['SMTP_HOST','SMTP_USER','SMTP_PASS']
       .filter(k => !process.env[k]);
     if (missing.length) {
@@ -73,7 +68,7 @@ export async function POST(req: Request) {
       message,
       '',
       `Origen: ${req.headers.get('referer') ?? ''}`,
-      `Fecha: ${new Date().toISOString()}`
+      `Fecha: ${new Date().toISOString()}`,
     ].join('\n');
 
     const html = `
@@ -100,25 +95,17 @@ export async function POST(req: Request) {
     `;
 
     const info = await transport.sendMail({
-      from,
-      to,
-      subject,
-      text: plain,
-      html,
+      from, to, subject, text: plain, html,
       replyTo: email,
-      headers: {
-        'X-Lead-Service': service ?? 'general',
-        'X-Reply-To': email
-      }
+      headers: { 'X-Lead-Service': service ?? 'general' }
     });
 
-    // log mínimo (no exponer secretos)
     console.log('lead mail sent', { messageId: info.messageId });
 
     return Response.json({ ok: true });
-  } catch (err: any) {
-    console.error('lead error', { message: err?.message, code: err?.code, stack: err?.stack });
-    // Devuelve más pista en prod (sin filtrar secretos)
-    return Response.json({ ok: false, error: 'MAIL_ERROR', detail: err?.message ?? String(err) }, { status: 500 });
+  } catch (e: unknown) {
+    const detail = errMessage(e);
+    console.error('lead error', detail);
+    return Response.json({ ok: false, error: 'MAIL_ERROR', detail }, { status: 500 });
   }
 }
