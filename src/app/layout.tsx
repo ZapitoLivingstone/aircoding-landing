@@ -7,7 +7,7 @@ import { UIProvider } from "@/providers/ui";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata = {
-  title: "AirCoding — Software y apps para hacer crecer tu negocio",
+  title: "AirCoding",
   description: "Desarrollo Web & Móvil, Software a medida, Soluciones de IA e Integración de APIs.",
 };
 
