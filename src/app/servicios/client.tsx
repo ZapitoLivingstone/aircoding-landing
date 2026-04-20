@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion, type Variants } from 'framer-motion';
 import { useI18n } from '@/providers/ui';
 import { servicesIndexByLang } from '@/content/services';
+import WhatsAppAssistant from '@/components/whatsapp-assistant';
 import type { JSX } from 'react';
 
 const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -16,23 +17,25 @@ const cardIn: Variants = {
 
 const copy = {
   es: {
-    title: 'Servicios',
+    title: 'Servicios 🧩',
     subtitle: 'Soluciones enfocadas en la versión 1: claras, mantenibles y listas para crecer por etapas.',
+    automation: 'Atendemos por WhatsApp Business para responder y clasificar tu caso más rápido.',
     more: 'Ver más',
     trust: [
-      { k: 'Independiente', t: 'Trato directo, sin intermediarios' },
-      { k: '24h', t: 'Tiempo de respuesta' },
-      { k: 'Factura', t: 'Cotización formal y factura' },
+      { k: '🤝 Independiente', t: 'Trato directo, sin intermediarios' },
+      { k: '⏱️ 24h', t: 'Tiempo de respuesta' },
+      { k: '🧾 Factura', t: 'Cotización formal y factura' },
     ],
   },
   en: {
-    title: 'Services',
+    title: 'Services 🧩',
     subtitle: 'Version-one focused solutions: clear, maintainable, and ready to scale in stages.',
+    automation: 'We support through WhatsApp Business to respond and classify your request faster.',
     more: 'Learn more',
     trust: [
-      { k: 'Independent', t: 'Direct communication' },
-      { k: '24h', t: 'Response time' },
-      { k: 'Invoice', t: 'Formal quote & invoice' },
+      { k: '🤝 Independent', t: 'Direct communication' },
+      { k: '⏱️ 24h', t: 'Response time' },
+      { k: '🧾 Invoice', t: 'Formal quote & invoice' },
     ],
   },
 } as const;
@@ -119,7 +122,8 @@ export default function ServiciosClient() {
   }
 
   return (
-    <main key={lang} className="container py-16">
+    <>
+      <main key={lang} className="container py-16">
       {/* HERO minimal y honesto */}
       <motion.section
         initial={{ opacity: 0, y: 10 }}
@@ -143,6 +147,8 @@ export default function ServiciosClient() {
 
         <h1 className="text-3xl font-bold">{t.title}</h1>
         <p className="mt-2 max-w-2xl text-slate-300">{t.subtitle}</p>
+        <p className="mt-2 max-w-2xl text-sm text-muted">{t.automation}</p>
+
         <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-300">
           <span className="rounded-full bg-white/5 px-3 py-1 ring-1 ring-white/10">
             {lang === 'es' ? 'Estudio independiente' : 'Independent studio'}
@@ -209,6 +215,11 @@ export default function ServiciosClient() {
           </div>
         </div>
       </section>
-    </main>
+      </main>
+      <WhatsAppAssistant
+        kind="servicios"
+        serviceTitle={lang === 'en' ? 'Services' : 'Servicios'}
+      />
+    </>
   );
 }

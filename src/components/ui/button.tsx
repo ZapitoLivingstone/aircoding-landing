@@ -23,11 +23,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export function Button({ className, variant = 'primary', ...props }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition';
+    'inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition-colors duration-200 focus-ring disabled:cursor-not-allowed disabled:opacity-60';
   const styles =
     variant === 'primary'
-      ? 'bg-[var(--ac-teal)] hover:bg-[var(--ac-teal-dark)] text-white shadow-[0_8px_30px_rgba(0,179,164,.25)]'
-      : 'bg-white/5 hover:bg-white/10 text-slate-100 ring-1 ring-white/10';
+      ? 'border border-[var(--cta-primary-border)] bg-[var(--cta-primary)] text-[var(--cta-primary-fg)] hover:bg-[var(--cta-primary-hover)]'
+      : 'border border-[var(--border)] bg-[color:var(--surface)] text-[var(--fg)] hover:bg-[color:var(--surface-2)]';
   return <button className={twMerge(base, styles, className)} {...props} />;
 }
 

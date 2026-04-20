@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/providers/ui';
 
 type ServiceValue = 'webmovil' | 'software' | 'ia' | 'apis';
-type TimeframeValue = 'urgent' | 'month' | 'quarter' | 'na';
 
 export default function ContactForm() {
   const { lang } = useI18n(); // 'es' (default) | 'en'
@@ -19,20 +18,14 @@ export default function ContactForm() {
       email: 'Email',
       service: 'Servicio (opcional)',
       message: 'Mensaje',
-      timeframe: 'Plazo (opcional)',
       placeholderName: 'Tu nombre completo',
       placeholderEmail: 'tucorreo@ejemplo.com',
       placeholderService: 'Selecciona una opción',
-      placeholderMessage: '¿Qué necesitas? (objetivo, plazos, presupuesto si tienes)…',
-      placeholderTimeframe: 'Selecciona un plazo',
+      placeholderMessage: '¿Qué necesitas? (objetivo y contexto de negocio)…',
       optWebMovil: 'Web & Móvil',
       optSoftware: 'Software a medida',
       optIA: 'Soluciones de IA',
       optAPIs: 'Integración de APIs',
-      tUrgent: 'Urgente (1–2 semanas)',
-      tMonth: 'Este mes (≤4 semanas)',
-      tQuarter: 'Próximo trimestre',
-      tNA: 'Flexible / por definir',
       consent: 'Acepto ser contactado por email.',
       send: 'Enviar cotización',
       sending: 'Enviando…',
@@ -55,20 +48,14 @@ export default function ContactForm() {
       email: 'Email',
       service: 'Service (optional)',
       message: 'Message',
-      timeframe: 'Timeframe (optional)',
       placeholderName: 'Your full name',
       placeholderEmail: 'you@example.com',
       placeholderService: 'Choose an option',
-      placeholderMessage: 'What do you need? (goal, timeline, budget if any)…',
-      placeholderTimeframe: 'Choose a timeframe',
+      placeholderMessage: 'What do you need? (goal and business context)…',
       optWebMovil: 'Web & Mobile',
       optSoftware: 'Custom Software',
       optIA: 'AI Solutions',
       optAPIs: 'API Integrations',
-      tUrgent: 'Urgent (1–2 weeks)',
-      tMonth: 'This month (≤4 weeks)',
-      tQuarter: 'Next quarter',
-      tNA: 'Flexible / TBD',
       consent: 'I agree to be contacted by email.',
       send: 'Send quote request',
       sending: 'Sending…',
@@ -91,7 +78,6 @@ export default function ContactForm() {
     name: z.string().trim().min(2, TXT.errName),
     email: z.string().trim().email(TXT.errEmail),
     service: z.enum(['webmovil','software','ia','apis']).optional(),
-    timeframe: z.enum(['urgent','month','quarter','na']).optional(),
     message: z.string().trim().min(10, TXT.errMessage),
     consent: z.boolean().refine(v => v === true, { message: TXT.errConsent }),
     website: z.string().optional(), // honeypot
@@ -105,12 +91,10 @@ export default function ContactForm() {
 
   // estados para controlar el "placeholder look" de los selects
   const [serviceSel, setServiceSel] = useState('');
-  const [timeSel, setTimeSel] = useState('');
 
   useEffect(() => {
     setErrors({});
     setServiceSel('');
-    setTimeSel('');
     setMsgLen(0);
     setServerError(null);
   }, [lang]);
@@ -129,7 +113,6 @@ export default function ContactForm() {
       name: String(form.get('name') || ''),
       email: String(form.get('email') || ''),
       service: (String(form.get('service') || '') || undefined) as ServiceValue | undefined,
-      timeframe: (String(form.get('timeframe') || '') || undefined) as TimeframeValue | undefined,
       message: String(form.get('message') || ''),
       consent: Boolean(form.get('consent') === 'on'),
       website: String(form.get('website') || ''), // honeypot
@@ -185,10 +168,8 @@ export default function ContactForm() {
     );
   }
 
-  // clases base para selects (más oscuros)
-  const selectBase = 'w-full rounded-xl px-4 py-3 outline-none ring-1 transition bg-[color:var(--surface)] ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]';
-  const selectPlaceholder = 'text-slate-500';
-  const selectValue = 'text-slate-200';
+  // clases base para selects con mejor contraste
+  const selectBase = 'select-pro w-full rounded-xl px-4 py-3 pr-10 text-sm outline-none transition';
 
   return (
     <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2" noValidate aria-describedby="form-note" aria-live="polite">
@@ -236,17 +217,30 @@ export default function ContactForm() {
       {/* Servicio (select más oscuro) */}
       <div className="md:col-span-1" id ="service-group">
         <label htmlFor="service" className="mb-1 block text-sm">{TXT.service}</label>
-        <select
-          id="service" name="service" defaultValue=""
-          onChange={(e) => setServiceSel(e.currentTarget.value)}
-          className={`${selectBase} ${serviceSel ? selectValue : selectPlaceholder}`}
-        >
-          <option value="" disabled>{TXT.placeholderService}</option>
-          <option value="webmovil">{TXT.optWebMovil}</option>
-          <option value="software">{TXT.optSoftware}</option>
-          <option value="ia">{TXT.optIA}</option>
-          <option value="apis">{TXT.optAPIs}</option>
-        </select>
+        <div className="relative">
+          <select
+            id="service" name="service" defaultValue=""
+            onChange={(e) => setServiceSel(e.currentTarget.value)}
+            data-empty={!serviceSel}
+            className={selectBase}
+          >
+            <option value="" disabled>{TXT.placeholderService}</option>
+            <option value="webmovil">💻📱 {TXT.optWebMovil}</option>
+            <option value="software">⚙️ {TXT.optSoftware}</option>
+            <option value="ia">🤖 {TXT.optIA}</option>
+            <option value="apis">🔌 {TXT.optAPIs}</option>
+          </select>
+          <svg
+            aria-hidden
+            viewBox="0 0 24 24"
+            className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
       </div>
 
       {/* Mensaje */}

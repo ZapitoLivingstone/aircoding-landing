@@ -13,6 +13,10 @@
   /* Accents */
   --acc-indigo:   #6366f1; /* indigo 500 */
   --acc-cyan:     #06b6d4; /* cyan 500 */
+  --cta-primary:  #ffd700;
+  --cta-primary-hover: #e3bf00;
+  --cta-primary-border: #c9a900;
+  --cta-primary-fg: #1e293b;
 
   /* Dark (default) */
   --bg:           #0b1220;
@@ -42,6 +46,45 @@
   --border:    rgba(2, 6, 23, 0.16);
   --ring:      color-mix(in oklab, var(--acc-indigo) 38%, black 0%);
   --code-color:rgba(2, 6, 23, .42);   /* color partículas en light */
+  --cta-primary: #f3cb35;
+  --cta-primary-hover: #e0b819;
+  --cta-primary-border: #b99722;
+  --cta-primary-fg: #1e293b;
+}
+
+/* Escala global de texto */
+:root[data-text-scale="normal"] { font-size: 16px; }
+:root[data-text-scale="large"] { font-size: 17px; }
+:root[data-text-scale="xlarge"] { font-size: 18px; }
+
+/* Alto contraste (dark) */
+:root[data-contrast="high"] {
+  --bg: #020409;
+  --fg: #ffffff;
+  --muted: oklch(0.9 0 0 / .9);
+  --surface: oklch(0.14 0 0 / .9);
+  --surface-2: oklch(0.12 0 0 / .74);
+  --border: oklch(0.96 0 0 / .4);
+  --ring: #ffe14a;
+  --cta-primary: #ffe14a;
+  --cta-primary-hover: #ffd500;
+  --cta-primary-border: #d8b600;
+  --cta-primary-fg: #111827;
+}
+
+/* Alto contraste (light) */
+:root[data-theme="light"][data-contrast="high"] {
+  --bg: #ffffff;
+  --fg: #0b1220;
+  --muted: #1f2937;
+  --surface: rgba(2, 6, 23, 0.09);
+  --surface-2: rgba(2, 6, 23, 0.14);
+  --border: rgba(2, 6, 23, 0.48);
+  --ring: #0b1220;
+  --cta-primary: #f4cc3a;
+  --cta-primary-hover: #dfb620;
+  --cta-primary-border: #ad8f1f;
+  --cta-primary-fg: #0b1220;
 }
 
 /* ==========================================================================
@@ -200,27 +243,19 @@ a:focus-visible, button:focus-visible { outline: none; }
    ========================================================================== */
 /* Primario */
 .btn-hero {
-  --btn-fg: #fff;
-  --btn-bg: linear-gradient(180deg,
-    color-mix(in oklab, var(--acc-cyan) 70%, white) 0%,
-    color-mix(in oklab, var(--acc-indigo) 65%, var(--ac-accent)) 100%);
-  --btn-border: color-mix(in oklab, var(--acc-cyan) 30%, black);
-  --btn-shadow: 0 10px 28px color-mix(in oklab, var(--acc-cyan) 24%, transparent);
-
-  color: var(--btn-fg);
-  background: var(--btn-bg);
-  border: 1px solid var(--btn-border);
+  color: var(--cta-primary-fg);
+  background: var(--cta-primary);
+  border: 1px solid var(--cta-primary-border);
   border-radius: calc(var(--radius) - 2px);
   padding: .72rem 1rem;
-  box-shadow: var(--btn-shadow);
-  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  transition: background-color .18s ease, border-color .18s ease;
 }
-.btn-hero:hover  { transform: translateY(-1px); filter: brightness(1.02); }
-.btn-hero:active { transform: translateY(0); }
-.btn-hero .icon  { transition: transform .22s cubic-bezier(.22,1,.36,1); }
-.btn-hero:hover .icon { transform: translateX(2px); }
+.btn-hero:hover  {
+  background: var(--cta-primary-hover);
+  border-color: color-mix(in oklab, var(--cta-primary-border) 80%, black 20%);
+}
 .btn-hero:focus-visible { box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 70%, transparent); }
-.btn-hero:disabled { opacity:.6; cursor:not-allowed; filter:saturate(.85); }
+.btn-hero:disabled { opacity:.6; cursor:not-allowed; }
 
 /* Secundario (glass) */
 .btn-ghost-hero {
@@ -249,6 +284,45 @@ a:focus-visible, button:focus-visible { outline: none; }
 
 /* Botones con ícono alineado */
 .btn-icon { display:inline-flex; align-items:center; gap:.5rem; }
+
+/* ==========================================================================
+   SELECTS & INPUTS (alto contraste)
+   ========================================================================== */
+.select-pro {
+  appearance: none;
+  color: var(--fg);
+  background: color-mix(in oklab, var(--surface), black 6%);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, white 0%);
+}
+.select-pro:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 65%, transparent);
+}
+.select-pro option {
+  color: #e6eaf2;
+  background: #111827;
+}
+.select-pro[data-empty="true"] { color: var(--muted); }
+
+.field-pro {
+  color: var(--fg);
+  background: color-mix(in oklab, var(--surface), black 6%);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, white 0%);
+}
+.field-pro::placeholder { color: var(--muted); }
+.field-pro:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 65%, transparent);
+}
+
+:root[data-theme="light"] .select-pro,
+:root[data-theme="light"] .field-pro {
+  background: #ffffff;
+  border-color: color-mix(in oklab, var(--border) 92%, black 0%);
+  color: var(--fg);
+}
+:root[data-theme="light"] .select-pro option {
+  color: #0f172a;
+  background: #ffffff;
+}
 
 /* ==========================================================================
    SHAPES & UTILS

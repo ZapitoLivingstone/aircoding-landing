@@ -9,9 +9,11 @@ type Social = "instagram" | "tiktok" | "linkedin" | "github";
 
 const socials: { id: Social; href: string; label: { es: string; en: string } }[] = [
   { id: "instagram", href: "https://instagram.com/aircodingspa", label: { es: "Instagram", en: "Instagram" } },
-  { id: "tiktok",    href: "https://tiktok.com/@aircoding",      label: { es: "TikTok",    en: "TikTok"    } },
-  { id: "github",    href: "https://github.com/ZapitoLivingstone",        label: { es: "GitHub",    en: "GitHub"    } },
+  { id: "tiktok", href: "https://tiktok.com/@aircoding", label: { es: "TikTok", en: "TikTok" } },
 ];
+
+const PHONE_DISPLAY = "+56 9 6841 9793";
+const PHONE_HREF = "tel:+56968419793";
 
 function SocialIcon({ id }: { id: Social }) {
   const base = "h-5 w-5";
@@ -27,13 +29,13 @@ function SocialIcon({ id }: { id: Social }) {
     case "tiktok":
       return (
         <svg className={base} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M14 3v8.2a4.2 4.2 0 1 1-3.2-4.07V10a2.2 2.2 0 1 0 2.2 2.2V3h1ZM15 3c.63 1.9 2.36 3.32 4.44 3.53V9.2c-1.96 0-3.77-.68-4.44-1.6V3Z" fill="currentColor"/>
+          <path d="M14 3v8.2a4.2 4.2 0 1 1-3.2-4.07V10a2.2 2.2 0 1 0 2.2 2.2V3h1ZM15 3c.63 1.9 2.36 3.32 4.44 3.53V9.2c-1.96 0-3.77-.68-4.44-1.6V3Z" fill="currentColor" />
         </svg>
       );
     case "github":
       return (
         <svg className={base} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M12 2C6.49 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.85 9.71.5.1.68-.23.68-.5v-1.8c-2.78.63-3.37-1.22-3.37-1.22-.46-1.2-1.14-1.53-1.14-1.53-.93-.66.07-.65.07-.65 1.02.07 1.56 1.07 1.56 1.07.92 1.61 2.4 1.15 2.98.88.09-.69.36-1.15.65-1.42-2.22-.26-4.55-1.15-4.55-5.12 0-1.13.39-2.05 1.04-2.77-.11-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.06A9.2 9.2 0 0 1 12 6.8c.85 0 1.7.12 2.5.36 1.9-1.34 2.74-1.06 2.74-1.06.56 1.43.22 2.49.11 2.75.65.72 1.04 1.64 1.04 2.77 0 3.98-2.34 4.85-4.56 5.1.37.33.7.96.7 1.95v2.88c0 .27.18.6.69.5A10.06 10.06 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z" fill="currentColor"/>
+          <path d="M12 2C6.49 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.85 9.71.5.1.68-.23.68-.5v-1.8c-2.78.63-3.37-1.22-3.37-1.22-.46-1.2-1.14-1.53-1.14-1.53-.93-.66.07-.65.07-.65 1.02.07 1.56 1.07 1.56 1.07.92 1.61 2.4 1.15 2.98.88.09-.69.36-1.15.65-1.42-2.22-.26-4.55-1.15-4.55-5.12 0-1.13.39-2.05 1.04-2.77-.11-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.06A9.2 9.2 0 0 1 12 6.8c.85 0 1.7.12 2.5.36 1.9-1.34 2.74-1.06 2.74-1.06.56 1.43.22 2.49.11 2.75.65.72 1.04 1.64 1.04 2.77 0 3.98-2.34 4.85-4.56 5.1.37.33.7.96.7 1.95v2.88c0 .27.18.6.69.5A10.06 10.06 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z" fill="currentColor" />
         </svg>
       );
   }
@@ -47,25 +49,25 @@ export default function Footer() {
 
   const copy = lang === "en"
     ? {
-        city: "Valdivia, Chile",
-        talk: "Let’s talk",
-        seeServices: "View services",
-        follow: "Follow us for updates, tips, and real projects.",
-        rights: "All rights reserved.",
-        projects: "Projects",
-        contact: "Contact",
-        brandAlt: "AirCoding",
-      }
+      city: "Valdivia, Chile",
+      talk: "Let’s talk",
+      seeServices: "View services",
+      follow: "Follow us for updates, tips, and real projects.",
+      rights: "All rights reserved.",
+      projects: "Projects",
+      contact: "Contact",
+      brandAlt: "AirCoding",
+    }
     : {
-        city: "Valdivia, Chile",
-        talk: "Hablemos",
-        seeServices: "Ver servicios",
-        follow: "Síguenos para ver avances, tips y proyectos reales.",
-        rights: "Todos los derechos reservados.",
-        projects: "Proyectos",
-        contact: "Contacto",
-        brandAlt: "AirCoding",
-      };
+      city: "Valdivia, Chile",
+      talk: "Hablemos",
+      seeServices: "Ver servicios",
+      follow: "Síguenos para ver avances, tips y proyectos reales.",
+      rights: "Todos los derechos reservados.",
+      projects: "Proyectos",
+      contact: "Contacto",
+      brandAlt: "AirCoding",
+    };
 
   return (
     <footer className="relative border-t border-token bg-[color:var(--surface)]/50 backdrop-blur pt-10">
@@ -103,6 +105,10 @@ export default function Footer() {
                 {copy.city} ·{" "}
                 <a className="underline" href="mailto:aircodingspa@gmail.com">
                   aircodingspa@gmail.com
+                </a>
+                {" "}·{" "}
+                <a className="underline" href={PHONE_HREF}>
+                  {PHONE_DISPLAY}
                 </a>
               </div>
             </div>

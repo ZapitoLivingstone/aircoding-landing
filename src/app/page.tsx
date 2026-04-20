@@ -8,6 +8,7 @@ import Testimonials from '@/components/value-props';
 import CTABanner from '@/components/cta-banner';
 import ContactForm from '@/components/contact-form';
 import Footer from '@/components/footer'; 
+import WhatsAppAssistant from '@/components/whatsapp-assistant';
 import { useI18n } from '@/providers/ui';
 
 export default function Page() {
@@ -34,6 +35,7 @@ export default function Page() {
       </main>
 
       <Footer />
+      <WhatsAppAssistant kind="general" />
     </>
   );
 }

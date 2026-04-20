@@ -14,7 +14,7 @@ const dicts: Dictionaries = {
     nav_process: 'Proceso',
     nav_projects: 'Proyectos',
     nav_contact: 'Contacto',
-    cta_quote: 'Cotiza tu proyecto',
+    cta_quote: 'Cotiza por WhatsApp',
 
     // Hero
     hero_h1: "Software moderno que hará crecer tu negocio.",
@@ -35,7 +35,7 @@ const dicts: Dictionaries = {
     nav_process: 'Process',
     nav_projects: 'Projects',
     nav_contact: 'Contact',
-    cta_quote: 'Get a quote',
+    cta_quote: 'Quote on WhatsApp',
 
     hero_h1: 'Modern software that will grow your business.',
     hero_sub:"Tailored digital solutions, built to grow with you.",
@@ -81,6 +81,28 @@ const ThemeCtx = createContext<ThemeCtxValue>({
 
 export function useThemeMode() {
   return useContext(ThemeCtx);
+}
+
+/* ========== ACCESSIBILITY ========== */
+
+export type TextScale = 'normal' | 'large' | 'xlarge';
+
+type AccessibilityCtxValue = {
+  textScale: TextScale;
+  setTextScale: (value: TextScale) => void;
+  highContrast: boolean;
+  setHighContrast: (value: boolean) => void;
+};
+
+const AccessibilityCtx = createContext<AccessibilityCtxValue>({
+  textScale: 'normal',
+  setTextScale: () => {},
+  highContrast: false,
+  setHighContrast: () => {},
+});
+
+export function useAccessibility() {
+  return useContext(AccessibilityCtx);
 }
 
 /* ========== PROVIDER ÚNICO ========== */
@@ -140,9 +162,44 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
 
   const themeValue = useMemo(() => ({ theme, setTheme }), [theme]);
 
+  // Accesibilidad
+  const [textScale, setTextScale] = useState<TextScale>('normal');
+  const [highContrast, setHighContrast] = useState(false);
+
+  useEffect(() => {
+    const savedScale =
+      (typeof window !== 'undefined' && localStorage.getItem('ac-text-scale')) as TextScale | null;
+    const savedContrast = typeof window !== 'undefined' ? localStorage.getItem('ac-high-contrast') : null;
+
+    if (savedScale === 'normal' || savedScale === 'large' || savedScale === 'xlarge') {
+      setTextScale(savedScale);
+    }
+    if (savedContrast === '1') {
+      setHighContrast(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.textScale = textScale;
+      document.documentElement.dataset.contrast = highContrast ? 'high' : 'normal';
+    }
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ac-text-scale', textScale);
+      localStorage.setItem('ac-high-contrast', highContrast ? '1' : '0');
+    }
+  }, [textScale, highContrast]);
+
+  const accessibilityValue = useMemo(
+    () => ({ textScale, setTextScale, highContrast, setHighContrast }),
+    [textScale, highContrast]
+  );
+
   return (
     <I18nCtx.Provider value={i18nValue}>
-      <ThemeCtx.Provider value={themeValue}>{children}</ThemeCtx.Provider>
+      <ThemeCtx.Provider value={themeValue}>
+        <AccessibilityCtx.Provider value={accessibilityValue}>{children}</AccessibilityCtx.Provider>
+      </ThemeCtx.Provider>
     </I18nCtx.Provider>
   );
 }
