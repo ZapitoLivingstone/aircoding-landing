@@ -1,9 +1,9 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import { Inter } from "next/font/google";
-import { MotionConfig } from "framer-motion";
 import { UIProvider } from "@/providers/ui";
 import AccessibilityMenu from "@/components/accessibility-menu";
+import MotionProvider from "@/components/motion-provider";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -16,12 +16,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.className} background-dots`} style={{ background: "var(--bg)", color: "var(--fg)" }}>
-        <MotionConfig reducedMotion="user">
+        <MotionProvider>
           <UIProvider>
             {children}
             <AccessibilityMenu />
           </UIProvider>
-        </MotionConfig>
+        </MotionProvider>
       </body>
     </html>
   );
