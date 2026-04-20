@@ -51,7 +51,7 @@ export default function ValueProps() {
   const t = useMemo<Content>(() => (lang === 'en' ? TEXT.en : TEXT.es), [lang]);
 
   return (
-    <section className="container py-16" id="valor" key={lang}>
+    <section className="container py-14 sm:py-16" id="valor" key={lang}>
       {/* B) Beneficios */}
         <h2 className="text-2xl font-bold md:text-3xl">{t.titleB}</h2>
         <p className="mt-1 text-sm text-muted">{t.subtitleB}</p>
@@ -61,13 +61,13 @@ export default function ValueProps() {
         initial={false}
         whileInView="show"
         viewport={{ once: false, amount: 0.25 }}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="mt-6 grid gap-4 sm:mt-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-3"
       >
         {t.benefits.map((b) => (
           <motion.article
             key={`benefit-${b.h}`}
             variants={itemIn}
-            className="rounded-2xl border bg-[color:var(--surface)] p-6 backdrop-blur shadow-token"
+            className="rounded-2xl border bg-[color:var(--surface)] p-5 shadow-token sm:p-6"
             style={{ borderColor: 'var(--border)' }}
           >
             <div className="text-lg font-semibold">{b.h}</div>

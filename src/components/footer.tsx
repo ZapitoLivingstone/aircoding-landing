@@ -70,7 +70,7 @@ export default function Footer() {
     };
 
   return (
-    <footer className="relative border-t border-token bg-[color:var(--surface)]/50 backdrop-blur pt-10">
+    <footer className="relative border-t border-token bg-[color:var(--surface)]/50 pt-8 sm:pt-10">
       {/* Top progress line (accent) */}
       <div
         aria-hidden
@@ -83,7 +83,7 @@ export default function Footer() {
 
       <div className="container">
         {/* Upper row: brand + CTA */}
-        <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-3">
+        <div className="grid grid-cols-1 items-center gap-5 sm:grid-cols-3 sm:gap-6">
           <div className="flex items-center gap-3">
             <div className="relative">
               <span
@@ -99,14 +99,13 @@ export default function Footer() {
                 className="rounded-full ring-1 ring-[var(--border)]"
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="text-sm font-semibold tracking-wide">AirCoding</div>
-              <div className="text-xs text-muted">
-                {copy.city} ·{" "}
+              <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+                <span>{copy.city}</span>
                 <a className="underline" href="mailto:aircodingspa@gmail.com">
                   aircodingspa@gmail.com
                 </a>
-                {" "}·{" "}
                 <a className="underline" href={PHONE_HREF}>
                   {PHONE_DISPLAY}
                 </a>
@@ -114,12 +113,12 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="sm:col-span-2 sm:justify-self-end">
-            <div className="flex flex-wrap items-center gap-3">
-              <Link href="#contacto" className="btn-hero btn-icon focus-ring">
+          <div className="w-full sm:col-span-2 sm:justify-self-end">
+            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+              <Link href="#contacto" className="btn-hero btn-icon focus-ring w-full justify-center sm:w-auto">
                 {copy.talk} <span aria-hidden>→</span>
               </Link>
-              <Link href="#servicios" className="btn-ghost-hero btn-icon focus-ring">
+              <Link href="#servicios" className="btn-ghost-hero btn-icon focus-ring w-full justify-center sm:w-auto">
                 {copy.seeServices} <span aria-hidden>↗</span>
               </Link>
             </div>
@@ -127,7 +126,7 @@ export default function Footer() {
         </div>
 
         {/* Middle row: social & nav */}
-        <div className="mt-8 rounded-2xl border border-token bg-[color:var(--surface)]/60 p-5">
+        <div className="mt-8 rounded-2xl border border-token bg-[color:var(--surface)]/60 p-4 sm:p-5">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
             <div>
               <p className="text-sm on-surface-muted">{copy.follow}</p>

@@ -25,10 +25,10 @@ export default function Page() {
         <Testimonials />
         
 
-        <section id="contacto" className="container pb-24">
+        <section id="contacto" className="container pb-32 pt-2 sm:pb-24">
           <h2 className="text-2xl font-bold md:text-3xl">{t('contact_title') ?? 'Contáctanos'}</h2>
           <p className="mt-2 text-muted">{t('contact_sub') ?? 'Te responderemos en menos de 24 horas.'}</p>
-          <div className="mt-6 rounded-2xl border border-token bg-[color:var(--surface)] p-6">
+          <div className="mt-6 rounded-2xl border border-token bg-[color:var(--surface)] p-4 sm:p-6">
             <ContactForm />
           </div>
         </section>

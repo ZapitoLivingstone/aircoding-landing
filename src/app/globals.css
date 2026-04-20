@@ -137,62 +137,21 @@ a:focus-visible, button:focus-visible { outline: none; }
 .border-token { border-color: var(--border); }
 
 /* ==========================================================================
-   HERO (capas suaves + compat light)
+   HERO (ligero y mobile-first)
    ========================================================================== */
-.hero { position: relative; }
-.hero::before,
-.hero::after {
-  content:"";
-  position:absolute; inset:-18% -12% auto -12%;
-  height:70vh; z-index:-1; filter: blur(64px);
-  pointer-events: none;
-  opacity:.65; mix-blend-mode: plus-lighter;
-  animation: heroSpin 52s linear infinite;
-}
-.hero::before {
-  background:
-    radial-gradient(40% 50% at 18% 15%, color-mix(in oklab, var(--acc-indigo) 18%, transparent) 0%, transparent 60%),
-    radial-gradient(38% 48% at 82% 20%, color-mix(in oklab, var(--acc-cyan) 16%, transparent) 0%, transparent 65%),
-    radial-gradient(50% 60% at 50% 90%, color-mix(in oklab, var(--ac-teal) 12%, transparent) 0%, transparent 70%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 10%, #000 36%, #000 64%, transparent 90%);
-          mask-image: linear-gradient(180deg, transparent 10%, #000 36%, #000 64%, transparent 90%);
-}
-.hero::after {
-  inset:-22% -10% auto -6%;
-  background:
-    conic-gradient(from 0deg,
-      color-mix(in oklab, var(--acc-indigo) 10%, transparent),
-      color-mix(in oklab, var(--acc-cyan) 10%, transparent),
-      transparent 60%);
-  animation-duration: 64s;
-  opacity:.5;
-}
-@keyframes heroSpin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) {
-  .hero::before, .hero::after { animation: none; }
+.hero {
+  position: relative;
+  isolation: isolate;
 }
 
 /* Separación responsiva del hero */
-.hero-padding { padding-block: 7rem 2.5rem; }
-@media (min-width: 768px){ .hero-padding { padding-top: 8rem; padding-bottom: 6rem; } }
-
-/* Spotlight detrás del logo */
-.logo-spotlight {
-  position: absolute; inset: -40px;
-  border-radius: 9999px; filter: blur(50px);
-  box-shadow: 0 0 140px 36px color-mix(in oklab, var(--ac-accent) 24%, transparent);
-  pointer-events: none;
+.hero-padding { padding-block: 6.5rem 3rem; }
+@media (min-width: 768px){
+  .hero-padding {
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+  }
 }
-:root[data-theme="light"] .logo-spotlight {
-  box-shadow: 0 0 120px 32px color-mix(in oklab, var(--ac-accent) 18%, transparent);
-}
-
-/* Texto por defecto en hero (light) */
-:root[data-theme="light"] .hero { color: var(--fg); }
-
-/* Bandas oscuras dentro del hero */
-.hero .hero-dark-band { background: rgba(2,6,23,.9); }
-:root[data-theme="light"] .hero .hero-dark-band { color: #fff; }
 
 /* ==========================================================================
    TIPOGRAFÍA ESPECIAL
@@ -381,92 +340,6 @@ a:focus-visible, button:focus-visible { outline: none; }
   .btn-ghost-hero { border-color: color-mix(in oklab, var(--border) 80%, black 0%); }
 }
 
-/* ==========================================================================
-   HERO — TYPED TEXT (por ID)
-   ========================================================================== */
-#hero-typed-text{
-  display:inline-block;
-  background-image: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--acc-cyan) 70%, white),
-    color-mix(in oklab, var(--acc-indigo) 68%, white) 55%,
-    color-mix(in oklab, var(--acc-cyan) 70%, white)
-  );
-  -webkit-background-clip: text; background-clip:text; color:transparent;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-/* En light, texto sólido oscuro para máxima legibilidad */
-:root[data-theme="light"] #hero-typed-text{
-  background: none !important;
-  color: var(--fg) !important;
-  -webkit-text-fill-color: var(--fg) !important;
-}
-/* Cursor visual opcional (desactiva si tu componente ya lo dibuja) */
-#hero-typed-text::after{
-  content:"▍";
-  margin-left:.06em;
-  display:inline-block;
-  vertical-align:baseline;
-  opacity:.9;
-  animation: heroCaret 1s steps(1,end) infinite;
-  background: none;
-  color: currentColor;
-  -webkit-text-fill-color: currentColor;
-}
-@keyframes heroCaret { 50% { opacity:.15; } }
-@media (prefers-reduced-motion: reduce){
-  #hero-typed-text::after{ animation:none; opacity:.6; }
-}
-
-/* ==========================================================================
-   HERO — SUBTÍTULO (GradientText)
-   ========================================================================== */
-.custom-class{
-  background-image: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--acc-indigo) 68%, white),
-    color-mix(in oklab, var(--acc-cyan)   68%, white)
-  );
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-}
-/* En light, subtítulo sólido legible */
-:root[data-theme="light"] .custom-class{
-  background: none !important;
-  color: color-mix(in oklab, var(--fg) 88%, black 0%) !important;
-}
-/* Alto contraste del sistema */
-@media (prefers-contrast: more){
-  .custom-class{ text-shadow: 0 1px 0 rgba(255,255,255,.06), 0 0 1px rgba(0,0,0,.12); }
-  :root[data-theme="light"] .custom-class{ text-shadow: 0 .5px 0 rgba(0,0,0,.12); }
-}
-
-/* ==========================================================================
-   HERO — BOTÓN SECUNDARIO (ghost) por ID
-   ========================================================================== */
-#button_service{
-  color: var(--fg);
-  background: color-mix(in oklab, var(--surface), transparent 6%);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) - 2px);
-  padding: .72rem 1rem;
-  backdrop-filter: blur(8px);
-  transition: transform .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
-}
-#button_service:hover{
-  transform: translateY(-1px);
-  background: color-mix(in oklab, var(--surface), white 6%);
-  box-shadow: 0 10px 24px -12px rgba(2,6,23,.25);
-}
-#button_service:active{ transform: translateY(0); }
-#button_service:focus-visible{
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 70%, transparent);
-}
-:root[data-theme="light"] #button_service{
-  background: color-mix(in oklab, var(--surface), white 2%);
-  border-color: color-mix(in oklab, var(--border) 90%, black 0%);
-  color: var(--fg);
-}
 /* ======================================================================
    LIGHT READABILITY PATCH — páginas de servicio
    Mejora contraste de texto y superficies translúcidas en modo claro

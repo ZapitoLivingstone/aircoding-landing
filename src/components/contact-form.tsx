@@ -177,7 +177,7 @@ export default function ContactForm() {
       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
       {/* Encabezado corto */}
-      <div className="md:col-span-2 mb-2">
+      <div className="mb-1 md:col-span-2 sm:mb-2">
         <h3 className="text-xl font-semibold">{TXT.title}</h3>
         <p id="form-note" className="mt-1 text-sm text-muted">{TXT.desc}</p>
       </div>
@@ -189,7 +189,7 @@ export default function ContactForm() {
           id="name" name="name" autoComplete="name" placeholder={TXT.placeholderName}
           aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'err-name' : undefined}
           className={`w-full rounded-xl px-4 py-3 outline-none ring-1 transition
-                     bg-[color:var(--surface)] ${errors.name ? 'ring-red-400 focus:ring-red-400' : 'ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]'} text-slate-200 placeholder:text-slate-500`}
+                     bg-[color:var(--surface)] ${errors.name ? 'ring-red-400 focus:ring-red-400' : 'ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]'} text-[var(--fg)] placeholder:text-muted`}
         />
         <AnimatePresence>{errors.name && (
           <motion.p id="err-name" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="mt-1 text-xs text-red-400">
@@ -205,7 +205,7 @@ export default function ContactForm() {
           id="email" name="email" type="email" autoComplete="email" placeholder={TXT.placeholderEmail}
           aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'err-email' : undefined}
           className={`w-full rounded-xl px-4 py-3 outline-none ring-1 transition
-                     bg-[color:var(--surface)] ${errors.email ? 'ring-red-400 focus:ring-red-400' : 'ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]'} text-slate-200 placeholder:text-slate-500`}
+                     bg-[color:var(--surface)] ${errors.email ? 'ring-red-400 focus:ring-red-400' : 'ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]'} text-[var(--fg)] placeholder:text-muted`}
         />
         <AnimatePresence>{errors.email && (
           <motion.p id="err-email" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="mt-1 text-xs text-red-400">
@@ -251,7 +251,7 @@ export default function ContactForm() {
           onChange={(e) => setMsgLen(e.currentTarget.value.length)}
           aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? 'err-message' : undefined}
           className={`w-full rounded-xl px-4 py-3 outline-none ring-1 transition
-                     bg-[color:var(--surface)] ${errors.message ? 'ring-red-400 focus:ring-red-400' : 'ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]'} text-slate-200 placeholder:text-slate-500`}
+                     bg-[color:var(--surface)] ${errors.message ? 'ring-red-400 focus:ring-red-400' : 'ring-[var(--border)] focus:ring-[color:var(--acc-indigo)]'} text-[var(--fg)] placeholder:text-muted`}
         />
         <div className="mt-1 flex items-center justify-between">
           <AnimatePresence>{errors.message && (
