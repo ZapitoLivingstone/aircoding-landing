@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useI18n } from '@/providers/ui';
 
+const OVERLAY_EVENT = 'aircoding:overlay-open';
+
 export type WhatsAppAssistantKind = 'general' | 'servicios' | 'web-movil' | 'software' | 'ia' | 'apis';
 
 export type WhatsAppAssistantOption = {
@@ -237,6 +239,20 @@ export default function WhatsAppAssistant({
     setContactTouched(false);
   }, [kind, lang, resolvedOptions]);
 
+  useEffect(() => {
+    const onOverlayOpen = (event: Event) => {
+      const source = (event as CustomEvent<string>).detail;
+      if (source !== 'whatsapp') setOpen(false);
+    };
+    window.addEventListener(OVERLAY_EVENT, onOverlayOpen as EventListener);
+    return () => window.removeEventListener(OVERLAY_EVENT, onOverlayOpen as EventListener);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    window.dispatchEvent(new CustomEvent(OVERLAY_EVENT, { detail: 'whatsapp' }));
+  }, [open]);
+
   const selectedOption = resolvedOptions.find((option) => option.id === optionId) ?? resolvedOptions[0];
   const resolvedServiceTitle = serviceTitle || buildServiceTitle(kind, lang);
   const contactValue = contact.trim();
@@ -255,12 +271,12 @@ export default function WhatsAppAssistant({
   return (
     <>
       {open && (
-        <div className="fixed inset-0 z-[70] bg-black/30 sm:bg-transparent" onClick={() => setOpen(false)} aria-hidden />
+        <div className="fixed inset-0 z-[70] bg-black/45" onClick={() => setOpen(false)} aria-hidden />
       )}
 
       {open && (
         <aside
-          className="fixed bottom-24 right-4 z-[71] w-[calc(100vw-2rem)] max-w-sm rounded-2xl border border-token bg-[color:var(--surface)] p-4 shadow-2xl"
+          className="fixed inset-x-3 bottom-20 top-[4.8rem] z-[71] flex flex-col rounded-2xl border border-token bg-[color:var(--bg)]/96 p-4 shadow-2xl backdrop-blur-xl sm:inset-auto sm:bottom-24 sm:right-4 sm:top-auto sm:max-h-[78dvh] sm:w-[calc(100vw-2rem)] sm:max-w-sm"
           aria-label={copy.title}
           onClick={(e) => e.stopPropagation()}
         >
@@ -278,89 +294,93 @@ export default function WhatsAppAssistant({
             </button>
           </div>
 
-          <div className="rounded-xl bg-[color:var(--surface-2)] p-3 text-sm">{copy.intro}</div>
+          <div className="rounded-xl bg-[color:var(--surface)] p-3 text-sm">{copy.intro}</div>
 
-          <div className="mt-3 grid gap-3">
-            <SelectField id="wa-assistant-option" label={copy.option} value={optionId} onChange={setOptionId}>
-              {resolvedOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.title}
-                </option>
-              ))}
-            </SelectField>
+          <div className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
+            <div className="grid gap-3 pb-2">
+              <SelectField id="wa-assistant-option" label={copy.option} value={optionId} onChange={setOptionId}>
+                {resolvedOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.title}
+                  </option>
+                ))}
+              </SelectField>
 
-            <div>
-              <label htmlFor="wa-assistant-goal" className="mb-1 block text-xs font-semibold tracking-wide text-muted">
-                {copy.goal}
-              </label>
-              <textarea
-                id="wa-assistant-goal"
-                rows={3}
-                value={goal}
-                onChange={(e) => setGoal(e.target.value.slice(0, 260))}
-                placeholder={copy.goalPlaceholder}
-                className="field-pro w-full rounded-xl px-4 py-3 text-sm outline-none transition"
-              />
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2">
               <div>
-                <label htmlFor="wa-assistant-company" className="mb-1 block text-xs font-semibold tracking-wide text-muted">
-                  {copy.company}
+                <label htmlFor="wa-assistant-goal" className="mb-1 block text-xs font-semibold tracking-wide text-muted">
+                  {copy.goal}
                 </label>
-                <input
-                  id="wa-assistant-company"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value.slice(0, 80))}
-                  placeholder={copy.companyPlaceholder}
+                <textarea
+                  id="wa-assistant-goal"
+                  rows={3}
+                  value={goal}
+                  onChange={(e) => setGoal(e.target.value.slice(0, 260))}
+                  placeholder={copy.goalPlaceholder}
                   className="field-pro w-full rounded-xl px-4 py-3 text-sm outline-none transition"
                 />
               </div>
 
-              <div>
-                <label htmlFor="wa-assistant-contact" className="mb-1 block text-xs font-semibold tracking-wide text-muted">
-                  {copy.contact}
-                </label>
-                <input
-                  id="wa-assistant-contact"
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value.slice(0, 60))}
-                  onBlur={() => setContactTouched(true)}
-                  placeholder={copy.contactPlaceholder}
-                  className="field-pro w-full rounded-xl px-4 py-3 text-sm outline-none transition"
-                  required
-                />
-                {contactTouched && !isContactValid && (
-                  <p className="mt-1 text-xs text-red-400">{copy.contactRequired}</p>
-                )}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="wa-assistant-company" className="mb-1 block text-xs font-semibold tracking-wide text-muted">
+                    {copy.company}
+                  </label>
+                  <input
+                    id="wa-assistant-company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value.slice(0, 80))}
+                    placeholder={copy.companyPlaceholder}
+                    className="field-pro w-full rounded-xl px-4 py-3 text-sm outline-none transition"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="wa-assistant-contact" className="mb-1 block text-xs font-semibold tracking-wide text-muted">
+                    {copy.contact}
+                  </label>
+                  <input
+                    id="wa-assistant-contact"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value.slice(0, 60))}
+                    onBlur={() => setContactTouched(true)}
+                    placeholder={copy.contactPlaceholder}
+                    className="field-pro w-full rounded-xl px-4 py-3 text-sm outline-none transition"
+                    required
+                  />
+                  {contactTouched && !isContactValid && (
+                    <p className="mt-1 text-xs text-red-400">{copy.contactRequired}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <a
-            href={assistantUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => {
-              if (!isContactValid) {
-                e.preventDefault();
-                setContactTouched(true);
-              }
-            }}
-            className={`btn-hero mt-4 inline-flex w-full items-center justify-center text-sm font-semibold ${!isContactValid ? 'opacity-60' : ''}`}
-            aria-disabled={!isContactValid}
-          >
-            {copy.cta}
-          </a>
+          <div className="mt-3 border-t border-token pt-3">
+            <a
+              href={assistantUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                if (!isContactValid) {
+                  e.preventDefault();
+                  setContactTouched(true);
+                }
+              }}
+              className={`btn-hero inline-flex w-full items-center justify-center text-sm font-semibold ${!isContactValid ? 'opacity-60' : ''}`}
+              aria-disabled={!isContactValid}
+            >
+              {copy.cta}
+            </a>
 
-          <p className="mt-2 text-xs text-muted">{copy.hint}</p>
+            <p className="mt-2 text-xs text-muted">{copy.hint}</p>
+          </div>
         </aside>
       )}
 
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="fixed bottom-5 right-4 z-[71] inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-xl transition hover:brightness-95"
+        className={`fixed bottom-5 right-4 z-[71] inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-sm font-semibold text-white shadow-xl transition hover:brightness-95 sm:h-auto sm:w-auto sm:gap-2 sm:px-4 sm:py-3 ${open ? 'pointer-events-none opacity-0' : ''}`}
         aria-expanded={open}
         aria-label={copy.bubble}
       >

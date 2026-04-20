@@ -119,7 +119,7 @@ function TiltSpotlight({ children, href, accent }: { children: React.ReactNode; 
       />
       <motion.div
         style={{ rotateX: trx, rotateY: try_, transformStyle: "preserve-3d" } as React.CSSProperties}
-        className="h-full rounded-2xl border bg-[color:var(--surface)] p-5 backdrop-blur transition group-hover:-translate-y-1"
+        className="h-full rounded-2xl border bg-[color:var(--surface)] p-4 transition group-hover:-translate-y-1 sm:p-5"
       >
         {children}
       </motion.div>
@@ -136,16 +136,16 @@ export default function ServicesGrid() {
   }));
 
   return (
-    <section id="servicios" className="container py-16">
-      <div className="flex items-end justify-between">
+    <section id="servicios" className="container py-14 sm:py-16">
+      <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
         <h2 className="text-2xl font-bold md:text-3xl">{t('services_title')}</h2>
-        <Link href="/servicios" className="text-sm text-muted hover:text-[color:var(--fg)]">
+        <Link href="/servicios" className="text-sm font-medium text-muted hover:text-[color:var(--fg)]">
           {t('view_all')}
         </Link>
       </div>
 
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
-        className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4"
       >
         {cards.map((s) => {
           const accent = ACCENTS[s.key as Key];
@@ -175,7 +175,7 @@ export default function ServicesGrid() {
                 </div>
 
                 {/* Body */}
-                <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
+                <h3 className="mt-4 text-base font-semibold sm:text-lg">{s.title}</h3>
                 <p className="mt-1 text-sm text-muted">{s.desc}</p>
 
                 {/* Tags — neutrales, sin teal */}

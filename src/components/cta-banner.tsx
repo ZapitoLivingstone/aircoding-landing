@@ -23,9 +23,9 @@ export default function CTABanner() {
         };
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-20" id="cta">
-      <div className="rounded-2xl border border-token bg-[color:var(--surface)] p-6 shadow-token md:p-8">
-        <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20" id="cta">
+      <div className="rounded-2xl border border-token bg-[color:var(--surface)] p-5 shadow-token sm:p-6 md:p-8">
+        <div className="grid gap-6 sm:gap-8 md:grid-cols-[1fr_auto] md:items-center">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-token bg-[color:var(--surface-2)] px-3 py-1.5">
               <Image
@@ -38,7 +38,7 @@ export default function CTABanner() {
               <span className="text-xs font-semibold tracking-wide">{copy.badge}</span>
             </div>
 
-            <h3 className="mt-4 text-2xl font-bold md:text-3xl">{copy.title}</h3>
+            <h3 className="mt-4 text-2xl font-bold leading-tight md:text-3xl">{copy.title}</h3>
             <p className="mt-2 text-sm text-muted md:text-base">{copy.desc}</p>
 
             <ul className="mt-4 flex flex-wrap gap-2 text-xs text-muted md:text-sm">
@@ -50,7 +50,7 @@ export default function CTABanner() {
             </ul>
           </div>
 
-          <div className="w-full max-w-[320px]">
+          <div className="w-full md:max-w-[320px]">
             <div className="grid gap-3">
               <a
                 href="#contacto"

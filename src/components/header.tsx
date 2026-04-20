@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useI18n, useThemeMode } from "@/providers/ui";
+
+const OVERLAY_EVENT = "aircoding:overlay-open";
 
 function NavLink({
   href,
@@ -87,6 +90,20 @@ export default function Header() {
     if (open) firstFocusableRef.current?.focus();
   }, [open]);
 
+  useEffect(() => {
+    const onOverlayOpen = (event: Event) => {
+      const source = (event as CustomEvent<string>).detail;
+      if (source !== "header") setOpen(false);
+    };
+    window.addEventListener(OVERLAY_EVENT, onOverlayOpen as EventListener);
+    return () => window.removeEventListener(OVERLAY_EVENT, onOverlayOpen as EventListener);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    window.dispatchEvent(new CustomEvent(OVERLAY_EVENT, { detail: "header" }));
+  }, [open]);
+
   return (
     <>
       <a
@@ -127,7 +144,7 @@ export default function Header() {
             </div>
           </nav>
 
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-1.5 md:hidden">
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="chip rounded-xl bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--muted)] ring-1 ring-[var(--border)] transition hover:text-[var(--fg)]"
@@ -173,9 +190,9 @@ export default function Header() {
             role="dialog"
             aria-modal="true"
             aria-label={lang === "en" ? "Mobile menu" : "Menú móvil"}
-            className="fixed right-0 top-0 z-[61] h-svh w-[88vw] max-w-[380px] rounded-l-2xl border-l border-[var(--border)] bg-[color:var(--surface)] shadow-2xl outline-none"
+            className="fixed inset-x-3 top-[4.25rem] z-[61] rounded-2xl border border-[var(--border)] bg-[color:var(--bg)]/98 p-4 shadow-2xl outline-none backdrop-blur-xl"
           >
-            <div className="flex h-16 items-center justify-between px-4">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <LogoMark />
                 <span className="text-sm font-semibold tracking-wide">AirCoding</span>
@@ -192,32 +209,37 @@ export default function Header() {
               </button>
             </div>
 
-            <nav className="px-4 pb-6 pt-2">
-              <ul className="grid gap-2 text-base">
+            <nav className="pt-4">
+              <ul className="grid gap-2 text-sm">
                 <li>
-                  <NavLink href="/servicios" onClick={() => setOpen(false)}>
+                  <Link
+                    href="/servicios"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl border border-[var(--border)] bg-[color:var(--surface)] px-4 py-3 font-medium text-[var(--fg)]"
+                  >
                     {t("nav_services")}
-                  </NavLink>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/#por-que"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl border border-[var(--border)] bg-[color:var(--surface)] px-4 py-3 font-medium text-[var(--fg)]"
+                  >
+                    {lang === "en" ? "Why us" : "Por qué nosotros"}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/#contacto"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl border border-[var(--border)] bg-[color:var(--surface)] px-4 py-3 font-medium text-[var(--fg)]"
+                  >
+                    {lang === "en" ? "Contact" : "Contacto"}
+                  </Link>
                 </li>
               </ul>
-              <div className="mt-6 grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => setLang(lang === "es" ? "en" : "es")}
-                  className="chip rounded-xl bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--muted)] ring-1 ring-[var(--border)] transition hover:text-[var(--fg)]"
-                  aria-label={lang === "es" ? "Cambiar a inglés" : "Switch to Spanish"}
-                  title="ES / EN"
-                >
-                  {lang.toUpperCase()}
-                </button>
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="chip rounded-xl bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--muted)] ring-1 ring-[var(--border)] transition hover:text-[var(--fg)]"
-                  aria-label={theme === "dark" ? "Cambiar a tema claro" : "Switch to dark theme"}
-                  title="Light / Dark"
-                >
-                  {theme === "dark" ? "☀︎" : "🌙"}
-                </button>
-              </div>
+
             </nav>
           </div>
         </>

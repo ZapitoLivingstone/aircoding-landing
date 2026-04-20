@@ -19,7 +19,11 @@ function TiltCard({ children }: { children: React.ReactNode }) {
   }
   function reset() { const el = ref.current!; el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); }
   return (
-    <div ref={ref} onMouseMove={onMouseMove} onMouseLeave={reset}
+    <div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={reset}
+      style={{ '--rx': '0deg', '--ry': '0deg' } as React.CSSProperties}
       className="[transform-style:preserve-3d] [transform:rotateX(var(--rx))_rotateY(var(--ry))] transition-transform">
       {children}
     </div>
@@ -31,8 +35,9 @@ export default function WhyUs() {
 
   const title = lang === 'en' ? 'Why AirCoding?' : '¿Por qué AirCoding?';
 
-  // Mensaje honesto: empresa/equipo pequeño (actualmente 1), 2 clientes, factura
   const honesty = lang === 'en'
+    ? 'Small independent team with direct execution. Formal quotes and invoice included.'
+    : 'Equipo pequeño e independiente con ejecución directa. Incluye cotización formal y factura.';
 
   // Razones para trabajar con AirCoding (sin métricas ni portafolio aquí)
   const reasons = useMemo(() => (
@@ -101,7 +106,7 @@ export default function WhyUs() {
   };
 
   return (
-    <section key={lang} className="container py-16" id="por-que">
+    <section key={lang} className="container py-14 sm:py-16" id="por-que">
       {/* Título + subrayado */}
       <div className="relative inline-block">
         <h2 className="text-2xl font-bold md:text-3xl">{title}</h2>
@@ -115,19 +120,19 @@ export default function WhyUs() {
       </div>
 
       {/* Párrafo honesto (equipo pequeño + factura + 2 clientes) */}
-      <p className="mt-3 text-sm text-muted max-w-2xl">{honesty}</p>
+      <p className="mt-3 max-w-2xl text-sm text-muted">{honesty}</p>
 
       {/* Razones: grid de cards (sin métricas ni portafolio) */}
       <motion.div
         variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
-        className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        className="mt-6 grid gap-4 sm:mt-8 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
         {reasons.map((r, i) => {
           const accent = ACCENTS[i % ACCENTS.length];
           return (
             <motion.div key={r.h} variants={cardIn}>
               <TiltCard>
-                <div className="relative isolate overflow-hidden rounded-2xl border border-token bg-[color:var(--surface)] p-6 backdrop-blur shadow-token transition group">
+                <div className="group relative isolate overflow-hidden rounded-2xl border border-token bg-[color:var(--surface)] p-5 shadow-token transition sm:p-6">
                   <div className="flex items-start gap-3">
                     <span
                       className="rounded-xl p-2.5 ring-1"
