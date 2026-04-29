@@ -57,6 +57,7 @@ export default function Footer() {
       projects: "Projects",
       contact: "Contact",
       brandAlt: "AirCoding",
+      privacy: "Privacy Policy",
     }
     : {
       city: "Valdivia, Chile",
@@ -67,6 +68,7 @@ export default function Footer() {
       projects: "Proyectos",
       contact: "Contacto",
       brandAlt: "AirCoding",
+      privacy: "Política de Privacidad",
     };
 
   return (
@@ -155,8 +157,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom row: legal */}
-        <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-token py-5 text-center text-xs text-muted sm:flex-row sm:text-left">
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-token py-5 text-center text-xs text-muted sm:flex-row sm:text-left">
           <div>© {year} AirCoding — {copy.rights}</div>
+          <Link href="/privacy" className="hover:text-[color:var(--fg)] hover:underline transition-colors focus-ring rounded-sm">
+            {copy.privacy}
+          </Link>
         </div>
       </div>
     </footer>
