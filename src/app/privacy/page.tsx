@@ -55,7 +55,7 @@ export default function PrivacyPage() {
                 Para solicitar la eliminación completa de tus datos de nuestros sistemas, por favor sigue estos pasos:
               </p>
               <ol className="list-decimal pl-6 text-muted space-y-2">
-                <li>Envía un correo electrónico a <strong>contacto@aircoding.cl</strong> con el asunto "Solicitud de eliminación de datos".</li>
+                <li>Envía un correo electrónico a <strong>contacto@aircoding.cl</strong> con el asunto &quot;Solicitud de eliminación de datos&quot;.</li>
                 <li>Incluye en el mensaje la dirección de correo electrónico asociada a tu cuenta o integración.</li>
                 <li>Procesaremos tu solicitud y eliminaremos todos tus datos en un plazo máximo de 3 a 5 días hábiles.</li>
               </ol>
